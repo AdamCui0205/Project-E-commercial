@@ -11,18 +11,22 @@ generator client {
 }
 
 model User {
-  user_id     Int       @id @default(autoincrement())
-  signup_date DateTime  @default(now())
-  username    String
-  password    String
-  email       String    @unique
-  phone       String
-  first_name  String
-  last_name   String
-  can_sell    Boolean
-  address     String
-  products    Product[]
-  orders      Order[]
+  user_id      Int       @id @default(autoincrement())
+  signup_date  DateTime  @default(now())
+  username     String
+  password     String
+  email        String    @unique
+  phone        String
+  first_name   String
+  last_name    String
+  can_sell     Boolean
+  address      String
+  addressLine2 String?
+  city         String
+  state        String
+  zip          String
+  products     Product[]
+  orders       Order[]
 }
 
 model Product {
