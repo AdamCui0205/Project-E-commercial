@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -36,9 +33,9 @@ model Product {
   price        Float
   image_url    String
   post_date    DateTime   @default(now())
-  category_id  Int
   is_available Boolean
   user_id      Int
+  category     String
   user         User       @relation(fields: [user_id], references: [user_id])
   cartItems    CartItem[]
 }
