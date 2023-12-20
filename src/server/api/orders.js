@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 // Get all orders
 router.get("/", async (req, res, next) => {
   try {
-    const { rows: cartItems } = await prisma.order.findMany();
-    res.send(cartItems);
+    const orders = await prisma.order.findMany();
+    res.send(orders);
   } catch (error) {
     next(error);
   }

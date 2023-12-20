@@ -5,7 +5,8 @@ const prisma = new PrismaClient();
 // Get all cart items
 router.get("/", async (req, res, next) => {
   try {
-    const { rows: cartItems } = await prisma.cartItem.findMany();
+    const cartItems = await prisma.cartitem.findMany();
+    console.log(cartItems);
     res.send(cartItems);
   } catch (error) {
     next(error);
