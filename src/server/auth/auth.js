@@ -8,35 +8,44 @@ const prisma = new PrismaClient();
 const saltRounds = 12;
 
 
-router.post('/register', async(req,res) => {
-    const { username, password } = req.body;
+router.post('/register', async (req, res) => {
+    const { username, password, email, phone, first_name, last_name, can_sell, address, addressLine2, city, state, zip } = req.body;
 
-    try{
+    try {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const newUser = await prisma.user.create({
             data: {
                 username,
                 password: hashedPassword,
+                email,
+                phone,
+                first_name,
+                last_name,
+                can_sell,
+                address,
+                addressLine2,
+                city,
+                state,
+                zip
             },
         });
 
-        const token = jwt.sign({ id: newUser.id }, process.env.SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ user_id: newUser.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(201).json({ token });
-    } catch(err){
+    } catch (err) {
         res.status(500).send(err.message);
     }
-})
+});
 
 router.post('/login', async(req, res) => {
     const { username, password } = req.body;
     try{
-        console.log("Logging in user:", username);
         const user = await prisma.user.findUnique({
             where: { username: username },
-        })
+        });
 
         if(user && await bcrypt.compare(password, user.password)){
-            const token = jwt.sign({ id: user.id }, process.env.SECRET,{ expireIn: '1h'});
+            const token = jwt.sign({ user_id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h'});
             res.json({ token });
         } else {
             res.sendStatus(401);
