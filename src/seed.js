@@ -99,9 +99,11 @@ const seed = async () => {
         data: usersData,
     });
 
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     const productsData = [
         {
-            user_id: 2,
+            user_id: 1,
             price: 699.99,
             image_url: 'image1.jpg',
             post_date: new Date('2022-12-15'),
