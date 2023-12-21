@@ -34,6 +34,7 @@ router.get('/:id', async (req, res) => {
 // Create a new cart item
 router.post('/', async (req, res) => {
     const { product_id, order_id, price, quantity } = req.body;
+    console.log(req.body);
     try {
         const newCartItem = await prisma.cartItem.create({
             data: { product_id, order_id, price, quantity },
