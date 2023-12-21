@@ -32,6 +32,7 @@ productsRouter.get('/:id', async (req, res) => {
 // Create a new user
 // Accessible to everyone
 productsRouter.post('/', async (req, res) => {
+    console.log(req.body);
     try {
         const newProduct = await prisma.product.create({
             data: req.body,

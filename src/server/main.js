@@ -2,7 +2,10 @@ const express = require("express");
 const ViteExpress = require("vite-express");
 const authenticateToken = require("./auth/authenticateToken");
 
+
+
 const app = express();
+app.use(express.json());
 
 // Public route
 app.get("/hello", (req, res) => {
