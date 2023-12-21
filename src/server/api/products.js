@@ -21,7 +21,7 @@ productsRouter.get('/:id', async (req, res) => {
     const productId = parseInt(req.params.id);
     try {
         const product = await prisma.product.findUnique({
-            where: { id: productId },
+            where: { product_id: productId },
         });
         res.send(product);
     } catch (err) {
@@ -44,11 +44,11 @@ productsRouter.post('/', async (req, res) => {
 
 // Update a user
 // restricted to authenticated users
-productsRouter.put('/:id', authenticateToken, async (req, res) => {
+productsRouter.put('/:id', async (req, res) => {
     const productId = parseInt(req.params.id);
     try {
         const updatedProduct = await prisma.product.update({
-            where: { id: productId },
+            where: { product_id: productId },
             data: req.body,
         });
         res.json(updatedProduct);
@@ -59,11 +59,11 @@ productsRouter.put('/:id', authenticateToken, async (req, res) => {
 
 // Delete a user
 // restricted to authenticated users
-productsRouter.delete('/:id', authenticateToken, async (req, res) => {
+productsRouter.delete('/:id', async (req, res) => {
     const productId = parseInt(req.params.id);
     try {
         await prisma.product.delete({
-            where: { id: productId },
+            where: { product_id: productId },
         });
         res.sendStatus(204);
     } catch (err) {

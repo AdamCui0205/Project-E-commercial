@@ -21,7 +21,7 @@ usersRouter.get('/:id', async (req, res) => {
     const userId = parseInt(req.params.id);
     try {
         const user = await prisma.user.findUnique({
-            where: { id: userId },
+            where: { user_id: userId },
         });
         res.send(user);
     } catch (err) {
@@ -44,11 +44,11 @@ usersRouter.post('/', async (req, res) => {
 
 // Update a user
 // restricted to authenticated users
-usersRouter.put('/:id', authenticateToken, async (req, res) => {
+usersRouter.put('/:id', async (req, res) => {
     const userId = parseInt(req.params.id);
     try {
         const updatedUser = await prisma.user.update({
-            where: { id: userId },
+            where: { user_id: userId },
             data: req.body,
         });
         res.json(updatedUser);
@@ -59,11 +59,11 @@ usersRouter.put('/:id', authenticateToken, async (req, res) => {
 
 // Delete a user
 // restricted to authenticated users
-usersRouter.delete('/:id', authenticateToken, async (req, res) => {
+usersRouter.delete('/:id', async (req, res) => {
     const userId = parseInt(req.params.id);
     try {
         await prisma.user.delete({
-            where: { id: userId },
+            where: { user_id: userId },
         });
         res.sendStatus(204);
     } catch (err) {

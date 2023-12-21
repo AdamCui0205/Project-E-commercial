@@ -2,13 +2,11 @@
   "name": "vite-react-starter",
   "private": true,
   "version": "0.0.0",
-  "prisma": {
-    "seed": "node src/seed.js"
-  },
   "scripts": {
     "dev": "nodemon src/server/main.js -w src/server",
     "start": "node src/server/main.js && vite",
-    "build": "vite build"
+    "build": "vite build",
+    "seed": "node src/seed.js"
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",

@@ -15,7 +15,9 @@ app.get("/protected", authenticateToken, (req, res) => {
 });
 
 
+
+
 // ViteExpress config
-ViteExpress.listen(app, 4200, () =>
-    console.log("Server is listening on port 4200..."),
+ViteExpress.listen(app, 4100, () =>
+    console.log("Server is listening on port 4100..."),
 );
