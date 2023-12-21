@@ -9,7 +9,7 @@ export default function ProductDetail(){
     useEffect(() => {
         async function fetchPuppies() {
           try {
-            const response = await fetch(`http://localhost:3000/api/products/27`)
+            const response = await fetch(`http://localhost:3000/api/products/${product.id}`)
             const productData = await response.json()
             console.log(productData);
           } catch (error) {
