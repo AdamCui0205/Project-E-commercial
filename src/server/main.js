@@ -1,4 +1,5 @@
 const express = require('express');
+const ViteExpress = require('vite-express');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -24,6 +25,6 @@ app.use('/auth', authRoutes);
 //     res.json({ message: 'This is a protected route' });
 // });
 
-app.listen(port, () => {
+ViteExpress.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
