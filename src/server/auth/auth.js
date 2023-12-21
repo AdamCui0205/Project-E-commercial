@@ -5,10 +5,10 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 const prisma = new PrismaClient();
+
 const saltRounds = 12;
 
-
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res, next) => {
     const { username, password, email, phone, first_name, last_name, can_sell, address, addressLine2, city, state, zip } = req.body;
 
     try {
@@ -32,27 +32,30 @@ router.post('/register', async (req, res) => {
 
         const token = jwt.sign({ user_id: newUser.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(201).json({ token });
-    } catch (err) {
-        res.status(500).send(err.message);
+    } catch (error) {
+       console.error(error.message);
+       next(error);
     }
 });
 
-router.post('/login', async(req, res) => {
+router.post('/login', async(req, res, next) => {
     const { username, password } = req.body;
     try{
         const user = await prisma.user.findUnique({
             where: { username: username },
         });
 
-        if(user && await bcrypt.compare(password, user.password)){
+        if(user){
+            await bcrypt.compare(password, user.password)
             const token = jwt.sign({ user_id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h'});
             res.json({ token });
         } else {
             res.sendStatus(401);
         }
 
-    } catch(err){
-        res.status(500).send(err.message);
+    } catch(error){
+        console.error(error.message);
+        next(error);
     }
 });
 

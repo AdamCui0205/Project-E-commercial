@@ -1,31 +1,33 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
-const authenticateToken = require('../auth/authenticateToken');
+// const authenticateToken = require('../auth/authenticateToken');
 const productsRouter = express.Router();
 const prisma = new PrismaClient();
 
 // Get all users
 // Accessible to everyone
-productsRouter.get('/', async (req, res) => {
+productsRouter.get('/', async (req, res, next) => {
     try {
         const products = await prisma.product.findMany();
         res.send(products);
-    } catch (err) {
-        res.status(500).send(err.message);
+    } catch (error) {
+        console.error(error.message);
+        next(error);
     }
 });
 
 // Get user by ID
 // Accessible to everyone
-productsRouter.get('/:id', async (req, res) => {
+productsRouter.get('/:id', async (req, res, next) => {
     const productId = parseInt(req.params.id);
     try {
         const product = await prisma.product.findUnique({
             where: { product_id: productId },
         });
         res.send(product);
-    } catch (err) {
-        res.status(500).send(err.message);
+    } catch (error) {
+        console.error(error.message);
+        next(error);
     }
 });
 
@@ -45,7 +47,7 @@ productsRouter.post('/', async (req, res) => {
 
 // Update a user
 // restricted to authenticated users
-productsRouter.put('/:id', async (req, res) => {
+productsRouter.put('/:id', async (req, res, next) => {
     const productId = parseInt(req.params.id);
     try {
         const updatedProduct = await prisma.product.update({
@@ -53,22 +55,24 @@ productsRouter.put('/:id', async (req, res) => {
             data: req.body,
         });
         res.json(updatedProduct);
-    } catch (err) {
-        res.status(500).send(err.message);
+    } catch (error) {
+        console.error(error.message);
+        next(error);
     }
 });
 
 // Delete a user
 // restricted to authenticated users
-productsRouter.delete('/:id', async (req, res) => {
+productsRouter.delete('/:id', async (req, res, next) => {
     const productId = parseInt(req.params.id);
     try {
         await prisma.product.delete({
             where: { product_id: productId },
         });
         res.sendStatus(204);
-    } catch (err) {
-        res.status(500).send(err.message);
+    } catch (error) {
+        console.error(error.message);
+        next(error)
     }
 });
 

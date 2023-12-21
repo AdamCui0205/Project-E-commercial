@@ -5,34 +5,36 @@ const prisma = new PrismaClient();
 const router = express.Router();
 
 // Get all cart items
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
     try {
         const cartItems = await prisma.cartItem.findMany();
         res.json(cartItems);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+       console.error(error.message);
+        next(error); // Pass errors to Express. Sends it to the next router to try to handle it.
     }
 });
 
 // Get a single cart item by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
     const id = parseInt(req.params.id);
     try {
         const cartItem = await prisma.cartItem.findUnique({
             where: { cart_item_id: id },
         });
         if (cartItem) {
-            res.json(cartItem);
+            res.status(200).json({ message: 'Item found', cartItem });
         } else {
             res.status(404).json({ message: 'Item not found' });
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+      console.error(error.message);
+      next(error);
     }
 });
 
 // Create a new cart item
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
     const { product_id, order_id, price, quantity } = req.body;
     console.log(req.body);
     try {
@@ -41,12 +43,13 @@ router.post('/', async (req, res) => {
         });
         res.status(201).json(newCartItem);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(error.message);
+        next(error)
     }
 });
 
 // Update a cart item
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
     const id = parseInt(req.params.id);
     const { product_id, order_id, price, quantity } = req.body;
     try {
@@ -54,22 +57,24 @@ router.put('/:id', async (req, res) => {
             where: { cart_item_id: id },
             data: { product_id, order_id, price, quantity },
         });
-        res.json(updatedCartItem);
+        res.json(updatedCartItem); // add status code
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(error.message);
+        next(error);
     }
 });
 
 // Delete a cart item
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
     const id = parseInt(req.params.id);
     try {
         await prisma.cartItem.delete({
             where: { cart_item_id: id },
         });
-        res.json({ message: 'Item deleted' });
+        res.json({ message: 'Item deleted' }); // send status code with item deleted
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error   (error.message);
+        next(error);
     }
 });
 
