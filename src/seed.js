@@ -134,6 +134,7 @@ const seedCartItems = async () => {
 const seed = async () => {
     try {
         await clearTables();
+        console.log('Tables cleared')
         await seedUsers();
         await seedProducts();
         await seedOrders();
