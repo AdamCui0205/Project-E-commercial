@@ -1,7 +1,24 @@
 import React from "react";
-import {useState} from "react";
+import {useState,useEffect} from "react";
+import { useParams } from 'react-router-dom';
 
 export default function ProductDetail(){
+    const[productInfo,setProductInfo] = useState([]);
+    const product = useParams();
+
+    useEffect(() => {
+        async function fetchPuppies() {
+          try {
+            const response = await fetch(`http://localhost:3000/api/products/27`)
+            const productData = await response.json()
+            console.log(productData);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        fetchPuppies()
+      }, []);
+
     return <section key={"1"}>
         <img src={"pup.imageUrl"} alt={"pup.breed"}/>
         <h2>{"pup.name"}</h2>
