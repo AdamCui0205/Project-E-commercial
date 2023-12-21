@@ -1,26 +1,29 @@
-const express = require("express");
-const ViteExpress = require("vite-express");
-const authenticateToken = require("./auth/authenticateToken");
-
-
+const express = require('express');
 
 const app = express();
+const port = process.env.PORT || 3000;
+
+const cartItemsRoutes = require('./api/cartItems');
+const ordersRoutes = require('./api/orders');
+const productsRoutes = require('./api/products');
+const usersRoutes = require('./api/users');
+const authRoutes = require('./auth/auth');
+// const authenticateToken = require('./auth/authenticateToken');
+
+// Middleware for parsing body of incoming requests
 app.use(express.json());
 
-// Public route
-app.get("/hello", (req, res) => {
-  res.send("Hello Vite + React!");
+// Use the imported routes
+app.use('/api/cart-items', cartItemsRoutes);
+app.use('/api/orders', ordersRoutes);
+app.use('/api/products', productsRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/auth', authRoutes);
+
+// app.get('/protected-route', authenticateToken, (req, res) => {
+//     res.json({ message: 'This is a protected route' });
+// });
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
-
-// Protected route test.
-app.get("/protected", authenticateToken, (req, res) => {
-  res.send("This is a protected route");
-});
-
-
-
-
-// ViteExpress config
-ViteExpress.listen(app, 4100, () =>
-    console.log("Server is listening on port 4100..."),
-);
