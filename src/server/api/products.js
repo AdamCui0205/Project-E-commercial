@@ -1,11 +1,9 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
-// const authenticateToken = require('../auth/authenticateToken');
+const authenticateToken = require('../auth/authenticateToken');
 const productsRouter = express.Router();
 const prisma = new PrismaClient();
 
-// Get all users
-// Accessible to everyone
 productsRouter.get('/', async (req, res, next) => {
     try {
         const products = await prisma.product.findMany();
@@ -16,8 +14,6 @@ productsRouter.get('/', async (req, res, next) => {
     }
 });
 
-// Get user by ID
-// Accessible to everyone
 productsRouter.get('/:id', async (req, res, next) => {
     const productId = parseInt(req.params.id);
     try {
@@ -31,9 +27,7 @@ productsRouter.get('/:id', async (req, res, next) => {
     }
 });
 
-// Create a new user
-// Accessible to everyone
-productsRouter.post('/', async (req, res) => {
+productsRouter.post('/', authenticateToken, async (req, res) => {
     console.log(req.body);
     try {
         const newProduct = await prisma.product.create({
@@ -45,9 +39,7 @@ productsRouter.post('/', async (req, res) => {
     }
 });
 
-// Update a user
-// restricted to authenticated users
-productsRouter.put('/:id', async (req, res, next) => {
+productsRouter.put('/:id', authenticateToken, async (req, res, next) => {
     const productId = parseInt(req.params.id);
     try {
         const updatedProduct = await prisma.product.update({
@@ -61,9 +53,8 @@ productsRouter.put('/:id', async (req, res, next) => {
     }
 });
 
-// Delete a user
-// restricted to authenticated users
-productsRouter.delete('/:id', async (req, res, next) => {
+
+productsRouter.delete('/:id', authenticateToken, async (req, res, next) => {
     const productId = parseInt(req.params.id);
     try {
         await prisma.product.delete({
