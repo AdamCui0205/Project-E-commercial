@@ -1,5 +1,4 @@
 const express = require('express');
-const ViteExpress = require('vite-express');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,7 +8,9 @@ const ordersRoutes = require('./api/orders');
 const productsRoutes = require('./api/products');
 const usersRoutes = require('./api/users');
 const authRoutes = require('./auth/auth');
-// const authenticateToken = require('./auth/authenticateToken');
+
+require('dotenv').config();
+
 
 // Middleware for parsing body of incoming requests
 app.use(express.json());
@@ -21,10 +22,6 @@ app.use('/api/products', productsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/auth', authRoutes);
 
-// app.get('/protected-route', authenticateToken, (req, res) => {
-//     res.json({ message: 'This is a protected route' });
-// });
-
-ViteExpress.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
