@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import '../styles/Header.css';
 const Header = () => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -8,7 +8,7 @@ const Header = () => {
     return (
         <header className="header">
             <div className="logo-container">
-                <img src="../assets/logot.png" alt="Cache Corner Logo" />
+                <img src="logot.png" alt="Cache Corner Logo" />
             </div>
             <div className="search-container">
                 <input type="text" placeholder="Search..." />
@@ -21,8 +21,8 @@ const Header = () => {
                     </>
                 ) : (
                     <>
-                        <Link to="/signup">Signup</Link>
-                        <Link to="/login">Login</Link>
+                        <Link to="/register">Signup</Link>
+                        <Link to="/login"> Login</Link>
                     </>
                 )}
             </nav>
