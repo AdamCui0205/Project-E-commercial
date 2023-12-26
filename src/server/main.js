@@ -30,7 +30,7 @@ app.use('/api/products', productsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/auth', authRoutes);
 
-const viteBuildPath = path.join(__dirname, 'dist');
+const viteBuildPath = path.join(__dirname, '../dist');
 
 app.use(express.static(viteBuildPath));
 
