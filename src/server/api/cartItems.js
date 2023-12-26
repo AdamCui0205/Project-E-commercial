@@ -1,11 +1,12 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const authenticateToken = require('../auth/authenticateToken');
 
 const router = express.Router();
 
 // Get all cart items
-router.get('/', async (req, res, next) => {
+router.get('/', authenticateToken, async (req, res, next) => {
     try {
         const cartItems = await prisma.cartItem.findMany();
         res.json(cartItems);
@@ -16,7 +17,7 @@ router.get('/', async (req, res, next) => {
 });
 
 // Get a single cart item by ID
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', authenticateToken, async (req, res, next) => {
     const id = parseInt(req.params.id);
     try {
         const cartItem = await prisma.cartItem.findUnique({
@@ -34,7 +35,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // Create a new cart item
-router.post('/', async (req, res, next) => {
+router.post('/', authenticateToken, async (req, res, next) => {
     const { product_id, order_id, price, quantity } = req.body;
     console.log(req.body);
     try {
@@ -49,7 +50,7 @@ router.post('/', async (req, res, next) => {
 });
 
 // Update a cart item
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', authenticateToken, async (req, res, next) => {
     const id = parseInt(req.params.id);
     const { product_id, order_id, price, quantity } = req.body;
     try {
@@ -65,7 +66,7 @@ router.put('/:id', async (req, res, next) => {
 });
 
 // Delete a cart item
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', authenticateToken, async (req, res, next) => {
     const id = parseInt(req.params.id);
     try {
         await prisma.cartItem.delete({

@@ -47,7 +47,7 @@ usersRouter.post('/', async (req, res, next) => {
 
 // Update a user
 // restricted to authenticated users
-usersRouter.put('/:id', async (req, res, next) => {
+usersRouter.put('/:id', authenticateToken, async (req, res, next) => {
     const userId = parseInt(req.params.id);
     try {
         const updatedUser = await prisma.user.update({
@@ -63,7 +63,7 @@ usersRouter.put('/:id', async (req, res, next) => {
 
 // Delete a user
 // restricted to authenticated users
-usersRouter.delete('/:id', async (req, res, next) => {
+usersRouter.delete('/:id', authenticateToken, async (req, res, next) => {
     const userId = parseInt(req.params.id);
     try {
         await prisma.user.delete({
