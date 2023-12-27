@@ -1,0 +1,116 @@
+.loginModal {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+    width: 90%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Shifting the modal to be centered */
+    z-index: 1000; /* Ensuring the modal is above other content */
+}
+
+.loginModal h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.loginModal form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.loginModal input[type="text"],
+.loginModal input[type="password"] {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.loginModal button {
+    background-color: #0056b3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.loginModal button:hover {
+    background-color: #003d82;
+}
+
+.loginModal .closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.loginModal form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.loginModal label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.loginModal input[type="email"],
+.loginModal input[type="password"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.loginModal button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.loginModal button:hover {
+    background-color: #0056b3;
+}
+
+.loginModal button[type="button"] {
+    background-color: #6c757d;
+}
+
+.loginModal button[type="button"]:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .loginModal {
+        width: 100%;
+        max-width: none;
+        box-shadow: none;
+        border-radius: 0;
+        top: 30%;
+    }
+}
+    .loginModal h2 {
+        font-size: 20px;
+    }
