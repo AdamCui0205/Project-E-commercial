@@ -40,13 +40,17 @@
         align-items: flex-start;
     }
 
+    .logo-container img {
+        height: 50px;
+    }
+
     .search-container, .nav-links {
         width: 100%;
         margin-top: 10px;
     }
 
     .search-container input {
-        width: 60%; /* Less wide on small screens */
+        width: 60%;
     }
 
     .nav-links {
