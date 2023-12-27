@@ -39,7 +39,7 @@
 }
 
 .registerModal button {
-    background-color: #0056b3;
+    background-color: rebeccapurple;
     color: white;
     padding: 10px;
     margin-bottom: 8px;
@@ -53,8 +53,9 @@
 }
 
 .registerModal button:hover {
-    background-color: #003d82;
+    background-color: blueviolet;
 }
+
 
 @media (max-width: 600px) {
     .registerModal {
