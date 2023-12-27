@@ -7,7 +7,6 @@ import ProductDetail from './components/ProductDetail';
 import PostItemForm from './components/PostItemForm';
 import LoginModal from './components/LoginModal';
 import RegisterModal from './components/RegisterModal';
-
 function App() {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
