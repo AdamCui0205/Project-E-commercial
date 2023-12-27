@@ -92,4 +92,3 @@ const RegisterModal = ({ isOpen, onClose }) => {
 };
 
 export default RegisterModal;
-
