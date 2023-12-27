@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+// const cors = require('cors');
 const app = express();
 const path = require('path');
 const port = process.env.PORT || 3000;
@@ -13,12 +13,12 @@ const authRoutes = require('./auth/auth');
 
 require('dotenv').config();
 
-// Middleware for CORS
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-}));
+// // Middleware for CORS
+// app.use(cors({
+//     origin: '*',
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     credentials: true
+// }));
 
 // Middleware for parsing body of incoming requests
 app.use(express.json());
