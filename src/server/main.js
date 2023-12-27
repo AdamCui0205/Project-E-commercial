@@ -30,12 +30,8 @@ app.use('/api/products', productsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/auth', authRoutes);
 
-// Log current working directory to debug the issue
-console.log('Current working directory:', process.cwd());
-
-// Serve static files from the React app
+// Serve static files
 const viteBuildPath = path.join(process.cwd(), 'dist');
-console.log('Resolved path to dist:', viteBuildPath);
 
 app.use(express.static(viteBuildPath));
 

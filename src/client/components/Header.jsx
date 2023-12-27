@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Header.css';
-const Header = () => {
 
+const Header = ({ onLoginClick, onRegisterClick }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    // Function for handling login state change
+    const handleLoginStateChange = (loggedIn) => {
+        setIsLoggedIn(loggedIn);
+    };
 
     return (
         <header className="header">
@@ -18,11 +23,12 @@ const Header = () => {
                     <>
                         <Link to="/post">Post</Link>
                         <Link to="/account">Account</Link>
+                        <button onClick={() => handleLoginStateChange(false)}>Logout</button>
                     </>
                 ) : (
                     <>
-                        <Link to="/register">Signup</Link>
-                        <Link to="/login"> Login</Link>
+                        <button onClick={onRegisterClick}>Signup</button>
+                        <button onClick={onLoginClick}>Login</button>
                     </>
                 )}
             </nav>
