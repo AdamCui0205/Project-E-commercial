@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 const saltRounds = 12;
 
 router.post('/register', async (req, res, next) => {
-    const { username, password, email, phone, first_name, last_name, can_sell, address, addressLine2, city, state, zip } = req.body;
+    const { password, email, phone, first_name, last_name, address, addressLine2, city, state, zip } = req.body;
 
     try {
         // Check if a user with the given email already exists
@@ -25,13 +25,11 @@ router.post('/register', async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const newUser = await prisma.user.create({
             data: {
-                username,
                 password: hashedPassword,
                 email,
                 phone,
                 first_name,
                 last_name,
-                can_sell,
                 address,
                 addressLine2,
                 city,
