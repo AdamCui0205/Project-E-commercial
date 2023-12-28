@@ -1,8 +1,8 @@
 const express = require('express');
-const cors = require('cors');
 const app = express();
 const path = require('path');
 const port = process.env.PORT || 3000;
+const cors = require('cors');
 
 // Import routes
 const cartItemsRoutes = require('./api/cartItems');
@@ -13,12 +13,6 @@ const authRoutes = require('./auth/auth');
 
 require('dotenv').config();
 
-// Middleware for CORS
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-}));
 
 // Middleware for parsing body of incoming requests
 app.use(express.json());
@@ -30,6 +24,12 @@ app.use('/api/products', productsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/auth', authRoutes);
 
+app.use(cors({
+    origin: 'https://cache-corner.onrender.com/', // Replace with your actual frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 // Serve static files
 const viteBuildPath = path.join(process.cwd(), 'dist');
 
