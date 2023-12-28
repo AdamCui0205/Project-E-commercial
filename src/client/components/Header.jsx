@@ -26,9 +26,9 @@ const Header = ({ onLoginClick, onRegisterClick }) => {
             <nav className="nav-links">
                 {isLoggedIn ? (
                     <>
-                        <button onClick={handlePostClick}>Post Item</button>
-                        <button onClick={handleAccountClick}>My Account</button>
-                        <button onClick={logout}>Logout</button>
+                        <button onClick={handlePostClick}>Post</button>
+                        <button onClick={handleAccountClick}>Account</button>
+
                     </>
                 ) : (
                     <>
