@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 import '../styles/Header.css';
 
-const Header = ({ isLoggedIn, onLoginClick, onRegisterClick, onLogout }) => {
+const Header = ({ onLoginClick, onRegisterClick }) => {
     const navigate = useNavigate();
+    const { isLoggedIn, logout } = useAuth();
 
     const handlePostClick = () => {
         navigate('/post-item');
@@ -26,7 +28,7 @@ const Header = ({ isLoggedIn, onLoginClick, onRegisterClick, onLogout }) => {
                     <>
                         <button onClick={handlePostClick}>Post Item</button>
                         <button onClick={handleAccountClick}>My Account</button>
-                        <button onClick={onLogout}>Logout</button>
+                        <button onClick={logout}>Logout</button>
                     </>
                 ) : (
                     <>
