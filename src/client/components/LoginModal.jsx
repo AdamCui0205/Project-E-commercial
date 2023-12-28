@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import '../styles/LoginModal.css';
 
-const LoginModal = ({ isOpen, onClose }) => {
+const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(''); // State for login error
+    const [error, setError] = useState('');
 
+   // Function to handle the form submission
     const handleLogin = async (event) => {
         event.preventDefault();
-        setError(''); // Clear previous errors
-
+        setError('');
+    //
         try {
             const response = await fetch('https://cache-corner.onrender.com/auth/login', {
                 method: 'POST',
@@ -19,12 +20,13 @@ const LoginModal = ({ isOpen, onClose }) => {
                 },
                 body: JSON.stringify({ email, password })
             });
-
+            // If the request is successful, store the JWT token in localStorage
             if (response.ok) {
                 const data = await response.json();
                 console.log("Login successful:", data);
-                localStorage.setItem('token', data.token); // Store the token
-                onClose(); // Close the modal
+                localStorage.setItem('token', data.token);
+                onLoginSuccess(); // Call the onLoginSuccess function after successful login
+                onClose();
             } else {
                 const errorData = await response.json();
                 setError(errorData.message);
@@ -39,7 +41,6 @@ const LoginModal = ({ isOpen, onClose }) => {
         <Modal isOpen={isOpen} onRequestClose={onClose} className="loginModal" contentLabel="Login">
             <h2>Login</h2>
             <form onSubmit={handleLogin}>
-                {/* Display login error */}
                 {error && <div className="error-message">{error}</div>}
                 <div>
                     <label>Email</label>

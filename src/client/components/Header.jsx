@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Header.css';
 
-const Header = ({ onLoginClick, onRegisterClick }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+const Header = ({ isLoggedIn, onLoginClick, onRegisterClick, onLogout }) => {
+    const navigate = useNavigate();
 
-    // Function for handling login state change
-    const handleLoginStateChange = (loggedIn) => {
-        setIsLoggedIn(loggedIn);
+    const handlePostClick = () => {
+        navigate('/post-item');
+    };
+
+    const handleAccountClick = () => {
+        navigate('/account');
     };
 
     return (
@@ -21,9 +24,9 @@ const Header = ({ onLoginClick, onRegisterClick }) => {
             <nav className="nav-links">
                 {isLoggedIn ? (
                     <>
-                        <Link to="/post">Post</Link>
-                        <Link to="/account">Account</Link>
-                        <button onClick={() => handleLoginStateChange(false)}>Logout</button>
+                        <button onClick={handlePostClick}>Post Item</button>
+                        <button onClick={handleAccountClick}>My Account</button>
+                        <button onClick={onLogout}>Logout</button>
                     </>
                 ) : (
                     <>
