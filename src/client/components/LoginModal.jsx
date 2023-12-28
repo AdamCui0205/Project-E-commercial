@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import { useAuth } from './AuthContext';
 import '../styles/LoginModal.css';
 
-const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
+const LoginModal = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const { login } = useAuth();
 
-   // Function to handle the form submission
     const handleLogin = async (event) => {
         event.preventDefault();
         setError('');
-    //
+
         try {
             const response = await fetch('https://cache-corner.onrender.com/auth/login', {
                 method: 'POST',
@@ -20,12 +21,11 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
                 },
                 body: JSON.stringify({ email, password })
             });
-            // If the request is successful, store the JWT token in localStorage
+
             if (response.ok) {
                 const data = await response.json();
                 console.log("Login successful:", data);
-                localStorage.setItem('token', data.token);
-                onLoginSuccess(); // Call the onLoginSuccess function after successful login
+                login(data.token);
                 onClose();
             } else {
                 const errorData = await response.json();
