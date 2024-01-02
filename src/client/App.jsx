@@ -1,31 +1,33 @@
-import { Routes, Route } from 'react-router-dom';
-//import Header from './componenter as Routts/Header';
-//import Footer from './components/Footer';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
 import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
-//import PostItemForm from './components/PostItemForm';
-//import Login from './components/Login';
-//import Register from './components/Register';
+import PostItemForm from './components/PostItemForm';
+import LoginModal from './components/LoginModal';
+import RegisterModal from './components/RegisterModal';
+import { AuthProvider } from "./components/AuthContext";
 
 function App() {
-    return (
-       // <Router>
-       <>            
-            <Routes>
-                <Route path="/" element={<ProductList />} />
-                <Route path="/product/:id" element={<ProductDetail />} />
+    const [showLogin, setShowLogin] = useState(false);
+    const [showRegister, setShowRegister] = useState(false);
 
-            </Routes>
-          </>
-      //</Router>
-      
-      );
-    }
-    
-    //<Header />
-    //<Footer />
-//<Route path="/post-item" element={<PostItemForm />} />
-//<Route path="/login" element={<Login />} />
-//<Route path="/register" element={<Register />} /> 
+    return (
+        <AuthProvider>
+            <Router>
+                <Header onLoginClick={() => setShowLogin(true)} onRegisterClick={() => setShowRegister(true)} />
+                <Routes>
+                    <Route path="/" element={<ProductList />} />
+                    <Route path="/product/:id" element={<ProductDetail />} />
+                    <Route path="/post-item" element={<PostItemForm />} />
+                </Routes>
+                <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
+                <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
+                <Footer />
+            </Router>
+        </AuthProvider>
+    );
+}
 
 export default App;

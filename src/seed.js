@@ -11,13 +11,11 @@ const clearTables = async () => {
 const usersData = [
     {
         signup_date: new Date('2021-12-15'),
-        username: 'user1',
         password: 'password1',
         email: 'user1@email.com',
         phone: '123-456-7890',
         first_name: 'John',
         last_name: 'Doe',
-        can_sell: true,
         address: '110 main street',
         addressLine2: 'apt1',
         city: 'Los Angeles',
@@ -26,13 +24,11 @@ const usersData = [
     },
     {
         signup_date: new Date('2021-12-16'),
-        username: 'user2',
         password: 'password2',
         email: 'user2@email.com',
         phone: '234-567-8901',
         first_name: 'Jason',
         last_name: 'Smith',
-        can_sell: true,
         address: '220 oak street',
         addressLine2: 'apt2',
         city: 'San Francisco',
@@ -134,6 +130,7 @@ const seedCartItems = async () => {
 const seed = async () => {
     try {
         await clearTables();
+        console.log('Tables cleared')
         await seedUsers();
         await seedProducts();
         await seedOrders();

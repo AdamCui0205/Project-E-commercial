@@ -1,14 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import { BrowserRouter } from "react-router-dom";
-import './index.css'
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-)
+import App from "./App";
+import Modal from "react-modal";
+import "./styles/index.css";
 
+Modal.setAppElement('#root');
+
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);

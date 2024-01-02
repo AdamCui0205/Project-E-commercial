@@ -6,6 +6,7 @@ function authenticateToken(req, res, next) {
 
     if (!token) return res.status(401).json({ message: 'No token provided' });
 
+    //put in try catch block
     jwt.verify(token, secretKey, (err, user) => {
         if (err) return res.status(403).json({ message: 'Invalid/expired token' });
 

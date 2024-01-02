@@ -1,6 +1,9 @@
-function ProductList () {
-    console.log("hello")
-    return <div>Product List Page</div>
+const ProductList = () => {
+    return (
+        <div className="container">
+            <h1>Product List</h1>
+        </div>
+    );
 }
 
-export default ProductList
+export default ProductList;
