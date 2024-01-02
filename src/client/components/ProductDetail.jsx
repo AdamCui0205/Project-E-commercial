@@ -35,7 +35,7 @@ export default function ProductDetail(){
         <img src={productInfo.image_url} alt={productInfo.image_url}/>
         <section className="details">
         <h2>{productInfo.description}</h2>
-        <h2>Date Posted: {productInfo.post_date.getDate()}</h2>
+        <h2>Date Posted: {"Product Date"}</h2>
         <h2>Category: {productInfo.category}</h2>
         <h2>Price: {productInfo.price}</h2>
         <h2>Available: {productInfo.is_available ? ("Yes") : ("No")}</h2>
