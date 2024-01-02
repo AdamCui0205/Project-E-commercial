@@ -33,15 +33,8 @@ export default function ProductDetail(){
     return <section key={productInfo.product_id}>
         <h2>{productInfo.title}</h2>
         <img src={productInfo.image_url} alt={productInfo.image_url}/>
-        <section className="details">
-        <h2>{productInfo.description}</h2>
-        <h2>Date Posted: {"productInfo.post_date"}</h2>
         <h2>Category: {productInfo.category}</h2>
-        <h2>Price: {productInfo.price}</h2>
-        <h2>Available: {productInfo.is_available ? ("Yes") : ("No")}</h2>
-        <button>Buy!</button>
-        </section>
-
+        <p>{productInfo.description}</p>
         <button>Go Back!</button>
     </section>
 }
