@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import '../styles/Header.css';
@@ -15,6 +14,10 @@ const Header = ({ onLoginClick, onRegisterClick }) => {
         navigate('/account');
     };
 
+    const handleLogoutClick = () => {
+        logout();
+        navigate('/login');
+    };
     return (
         <header className="header">
             <div className="logo-container">
@@ -28,6 +31,7 @@ const Header = ({ onLoginClick, onRegisterClick }) => {
                     <>
                         <button onClick={handlePostClick}>Post</button>
                         <button onClick={handleAccountClick}>Account</button>
+                        <button onClick={handleLogoutClick}>Logout</button>
 
                     </>
                 ) : (
