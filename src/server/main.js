@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 
 // Import routes
@@ -32,13 +32,14 @@ app.use(express.static(viteBuildPath));
 // The catch-all route: for any request that doesn't match other routes,
 // send back the app's index.html file.
 app.get('*', (req, res) => {
-    res.sendFile(path.resolve(viteBuildPath, 'index.html'), (err) => {
+    res.sendFile(path.resolve(process.cwd(), 'Project-E-commercial', 'index.html'), (err) => {
         if (err) {
             console.error('Error sending index.html:', err);
             res.status(500).send(err.message);
         }
     });
 });
+
 
 // Handle 404 errors
 app.use((req, res) => {
