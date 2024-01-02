@@ -1,6 +1,4 @@
 import React from "react";
-import {useState,useEffect} from "react";
-import { useParams } from 'react-router-dom';
 
 const dummyProduct = {
   product_id: 0,
@@ -13,28 +11,16 @@ const dummyProduct = {
   is_available: false,
 }
 
-export default function ProductDetail(){
-    const[productInfo,setProductInfo] = useState(dummyProduct);
-    const product = useParams();
+export default function ProductCard(product){
 
-    useEffect(() => {
-        async function fetchProduct() {
-          try {
-            const response = await fetch(`http://localhost:3000/api/products/${product.id}`)
-            const productData = await response.json()
-            setProductInfo(productData);
-          } catch (error) {
-            console.error(error);
-          }
-        }
-        fetchProduct()
-      }, []);
-
-    return <section key={productInfo.product_id}>
-        <h2>{productInfo.title}</h2>
-        <img src={productInfo.image_url} alt={productInfo.image_url}/>
-        <h2>Category: {productInfo.category}</h2>
-        <p>{productInfo.description}</p>
-        <button>Go Back!</button>
+    return <section key={product.product_id}>
+        <h2>{product.title}</h2>
+        <img src={product.image_url} alt={productInfo.image_url}/>
+        <p>{product.description}</p>
+        <h2>Date Posted: {"productInfo.post_date"}</h2>
+        <h2>Category: {product.category}</h2>
+        <h2>Price: {product.price}</h2>
+        <h2>Available: {product.is_available ? ("Yes") : ("No")}</h2>
+        <button>More Info!</button>
     </section>
 }
