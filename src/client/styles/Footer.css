@@ -1,0 +1,41 @@
+/* Footer Styles */
+.footer-container {
+  background-color: #333;
+  color: #fff;
+  padding: 7.5px 0; /* Adjust padding for half the desired height */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box; /* Include padding and border in the total width */
+  height:25%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center; /* Center items vertically */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1;
+  margin: 0px;
+  text-align: center; /* Center text in each section */
+}
+
+.footer-section h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px; /* Add some bottom margin to h2 for spacing */
+}
+
+.footer-section p {
+  margin: 5px 0; /* Add some margin to paragraphs for spacing */
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 10px; /* Adjust margin to your preference */
+  padding-top: 5px
+}
