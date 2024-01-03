@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import '../styles/Header.css';
-
+import '../styles/ProductCard.css'; // Add a new CSS file for styling product cards
+import ProductCard from './ProductCard.jsx'
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -100,16 +101,11 @@ const App = () => {
           )}
         </nav>
       </header>
-      <ul>
-        {filteredProducts.map((product) => (
-          <li key={product.product_id}>
-            <h2>{product.title}</h2>
-            <p>Description: {product.description}</p>
-            <p>Price: ${product.price}</p>
-            {/* Add other product information as needed */}
-          </li>
-        ))}
-      </ul>
+      <div className="product-list">
+        {filteredProducts.map((product) => {
+            return ProductCard(product)
+        })}
+      </div>
     </div>
   );
 };
