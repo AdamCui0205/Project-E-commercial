@@ -1,18 +1,33 @@
 const jwt = require('jsonwebtoken');
-const secretKey = process.env.JWT_SECRET;
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
+// const secretKey = process.env.JWT_SECRET;
 
-function authenticateToken(req, res, next) {
+async function authenticateToken(req, res, next) {
     const token = req.headers['authorization'];
 
     if (!token) return res.status(401).json({ message: 'No token provided' });
 
     //put in try catch block
-    jwt.verify(token, secretKey, (err, user) => {
-        if (err) return res.status(403).json({ message: 'Invalid/expired token' });
+    console.log({token: token, secret: process.env.JWT_SECRET})
+    const isValid = jwt.verify(token, process.env.JWT_SECRET)
+    console.log("isValid", isValid)
 
-        req.user = user;
-        next();
-    });
+    if (!isValid) {
+        res.status(403).send({message: "nope!"})
+        return
+    }
+
+    const user = await prisma.user.findFirst({
+        where:{
+            user_id: isValid.user_id
+        }
+    })
+
+    console.log(user)
+
+    req.user = user;
+    next();
 }
 
 module.exports = authenticateToken;

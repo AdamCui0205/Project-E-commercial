@@ -31,7 +31,7 @@ model Product {
   price        Float
   image_url    String
   post_date    DateTime   @default(now())
-  is_available Boolean
+  is_available Boolean  @default(true)
   user_id      Int
   category     String
   user         User       @relation(fields: [user_id], references: [user_id])
