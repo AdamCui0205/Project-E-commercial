@@ -51,7 +51,6 @@ const RegisterModal = ({ isOpen, onClose }) => {
 
                 // Store the JWT token in localStorage or sessionStorage
                 localStorage.setItem('token', data.token);
-
                 // Close the modal if registration is successful
                 onClose();
             } else {
