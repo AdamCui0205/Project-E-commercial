@@ -14,6 +14,10 @@ const ProductList = () => {
 
     return (
         <div>
+        <div className="search-container">
+            <input type="text" placeholder="Search..." />
+        </div>
+
             {products.length > 0 ? (
                 products.map(product => (
                     <ProductCard key={product.product_id} product={product} />
