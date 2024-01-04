@@ -23,6 +23,7 @@ export default function ProductDetail(){
             const response = await fetch(`http://localhost:3000/api/products/${product.id}`)
             const productData = await response.json()
             setProductInfo(productData);
+            console.log(productData);
           } catch (error) {
             console.error(error);
           }
