@@ -12,15 +12,16 @@ import { AuthProvider } from "./components/AuthContext";
 function App() {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
+    const [showPost, setShowPost] = useState(false);
 
     return (
         <AuthProvider>
             <Router>
-                <Header onLoginClick={() => setShowLogin(true)} onRegisterClick={() => setShowRegister(true)} />
+                <Header onLoginClick={() => setShowLogin(true)} onRegisterClick={() => setShowRegister(true)} setShowPost={setShowPost}/>
                 <Routes>
                     <Route path="/" element={<ProductList />} />
                     <Route path="/product/:id" element={<ProductDetail />} />
-                    <Route path="/post-item" element={<PostItemForm />} />
+                    <Route path="/post-item" element={<PostItemForm isOpen={showPost} onClose={() => setShowPost(false)} setShowPost={setShowPost}/>} />
                 </Routes>
                 <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
                 <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
