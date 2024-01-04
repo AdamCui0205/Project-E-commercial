@@ -6,13 +6,19 @@ import { useAuth } from './AuthContext';
 import '../styles/Header.css';
 import '../styles/ProductCard.css'; // Add a new CSS file for styling product cards
 import ProductCard from './ProductCard.jsx'
+import LoginModal from './LoginModal';
+
+import RegisterModal from './RegisterModal';
 
 const App = () => {
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate();
-  const { isLoggedIn, logout } = useAuth();
+    const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isLoginModalOpen, setLoginModalOpen] = useState(false); // State for modal visibility
+    const navigate = useNavigate();
+    const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+    const { isLoggedIn, logout } = useAuth();
+  
 
   useEffect(() => {
     // Fetch products from the server
@@ -62,12 +68,14 @@ const App = () => {
     navigate('/');
   };
 
-  const onRegisterClick = () => {
-    // Handle registration logic
+  const handleLoginClick = () => {
+    // Open the login modal
+    setLoginModalOpen(true);
   };
 
-  const onLoginClick = () => {
-    // Handle login logic
+  const handleRegisterClick = () => {
+    // Open the registration modal
+    setRegisterModalOpen(true);
   };
 
   return (
@@ -95,17 +103,20 @@ const App = () => {
             </>
           ) : (
             <>
-              <button onClick={onRegisterClick}>Signup</button>
-              <button onClick={onLoginClick}>Login</button>
+              <button onClick={handleRegisterClick}>Signup</button>
+              <button onClick={handleLoginClick}>Login</button>
             </>
           )}
         </nav>
       </header>
       <div className="product-list">
         {filteredProducts.map((product) => {
-            return ProductCard(product)
+          return ProductCard(product);
         })}
       </div>
+      <RegisterModal isOpen={isRegisterModalOpen} onClose={() => setRegisterModalOpen(false)} />
+      {/* Render the LoginModal component */}
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
     </div>
   );
 };
