@@ -48,6 +48,7 @@ const PostItemForm = ({ isOpen, onClose, setShowPost }) => {
             //     console.log('Post successful:', data);
             const response = await axios.post('http://localhost:4200/api/products', productData, {headers:{Authorization: token}})
             console.log(response);
+            // console.log(headers);
                 // Store the JWT token in localStorage or sessionStorage
 
                 // Close the modal if Post is successful
@@ -72,7 +73,6 @@ const PostItemForm = ({ isOpen, onClose, setShowPost }) => {
                 {/* Error message display */}
                 {error && <div className="error-message">{error}</div>}
                 <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
-                <input type="text" value={title} onChange={(e) => setPrice(e.target.value)} placeholder="Title" required />
                 <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" required />
                 <input type="string" value={image_url} onChange={(e) => setImage_url(e.target.value)} placeholder="Image_url" />
                 <input type="int" value={user_id} onChange={(e) => setUser_id(e.target.value)} placeholder="User_id" />

@@ -28,13 +28,14 @@ productsRouter.get('/:id', async (req, res, next) => {
 });
 
 productsRouter.post('/', authenticateToken, async (req, res) => {
+    console.log(req.headers);
     console.log(req.body);
     const {description, price, image_url, user_id, category} = req.body
     try {
         const newProduct = await prisma.product.create({
             data: {
                 description,
-                title: "testing",
+                title: 'testing',
                 price,
                 image_url,
                 is_available: true,
