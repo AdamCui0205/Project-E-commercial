@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import '../styles/PostItemForm.css';
-import axios from 'axios';
+//import axios from 'axios';
 
 const PostItemForm = ({ isOpen, onClose, setShowPost }) => {
     // State hooks for form fields
@@ -33,32 +33,31 @@ const PostItemForm = ({ isOpen, onClose, setShowPost }) => {
         try {
             const token = window.localStorage.getItem('token');
             console.log("token", token)
-            // console.log(token);
-            // const response = await fetch('https://cache-corner.onrender.com/api/products', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'authorization': String(token)
-            //     },
-            //     body: JSON.stringify(productData)
-            // });
+            console.log(token);
+            const response = await fetch('http://localhost:4200/api/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': String(token)
+                },
+                body: JSON.stringify(productData)
+            });
 
-            // if (response.ok) {
-            //     const data = await response.json();
-            //     console.log('Post successful:', data);
-            const response = await axios.post('http://localhost:4200/api/products', productData, {headers:{Authorization: token}})
-            console.log(response);
-            // console.log(headers);
-                // Store the JWT token in localStorage or sessionStorage
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Post successful:', data);
+            // const response = await axios.post('http://localhost:4200/api/products', productData, {headers:{Authorization: token}})
+            // console.log(response);
+            //     // Store the JWT token in localStorage or sessionStorage
 
-                // Close the modal if Post is successful
+            //     // Close the modal if Post is successful
                 onClose();
-            // } else {
-            //     const errorData = await response.json();
-            //     console.error('Post failed:', errorData.message);
-            //     // Set error message if request fails
-            //     setError('Failed to post product:', errorData.message);
-            // }
+            } else {
+                const errorData = await response.json();
+                console.error('Post failed:', errorData.message);
+                // Set error message if request fails
+                setError('Failed to post product:', errorData.message);
+            }
         } catch (error) {
             console.error('Error during posting:', error);
             // Set error message if request fails
