@@ -5,14 +5,19 @@ const authenticateToken = require('../auth/authenticateToken');
 
 const router = express.Router();
 
-// Get all cart items
+// Get all of the user's cart items
 router.get('/', authenticateToken, async (req, res, next) => {
+    const user_id = req.user.user_id; // Extract user_id from the authenticated user
+
     try {
-        const cartItems = await prisma.cartItem.findMany();
+        const cartItems = await prisma.cartItem.findMany({
+            where: { user_id, order_id: null },
+            include: { product: true } // Includes related product details
+        });
         res.json(cartItems);
     } catch (error) {
-       console.error(error.message);
-        next(error); // Pass errors to Express. Sends it to the next router to try to handle it.
+        console.error(error.message);
+        next(error);
     }
 });
 
@@ -36,45 +41,71 @@ router.get('/:id', authenticateToken, async (req, res, next) => {
 
 // Create a new cart item
 router.post('/', authenticateToken, async (req, res, next) => {
-    const { product_id, order_id, price, quantity } = req.body;
-    console.log(req.body);
-    try {
-        const newCartItem = await prisma.cartItem.create({
-            data: { product_id, order_id, price, quantity },
-        });
-        res.status(201).json(newCartItem);
-    } catch (error) {
-        console.error(error.message);
-        next(error)
-    }
-});
+    const { product_id, quantity } = req.body;
+    const user_id = req.user.user_id;
 
-// Update a cart item
-router.put('/:id', authenticateToken, async (req, res, next) => {
-    const id = parseInt(req.params.id);
-    const { product_id, order_id, price, quantity } = req.body;
     try {
-        const updatedCartItem = await prisma.cartItem.update({
-            where: { cart_item_id: id },
-            data: { product_id, order_id, price, quantity },
+        // Check if the product already exists in the cart
+        const existingItem = await prisma.cartItem.findFirst({
+            where: { product_id, order_id: null, user_id }
         });
-        res.json(updatedCartItem); // add status code
+
+        if (existingItem) {
+            // If the product exists in the cart, update the quantity
+            const updatedCartItem = await prisma.cartItem.update({
+                where: { cart_item_id: existingItem.cart_item_id },
+                data: { quantity: existingItem.quantity + quantity }, // todo: Make sure front-end takes quantity into account
+            });
+            res.status(200).json(updatedCartItem);
+        } else {
+            // If not, create a new cart item
+            const newCartItem = await prisma.cartItem.create({
+                data: { product_id, quantity, user_id },
+            });
+            res.status(201).json(newCartItem);
+        }
     } catch (error) {
         console.error(error.message);
         next(error);
     }
 });
 
-// Delete a cart item
-router.delete('/:id', authenticateToken, async (req, res, next) => {
-    const id = parseInt(req.params.id);
+// PUT route to update the quantity of a cart item
+router.put('/:id', authenticateToken, async (req, res, next) => {
+    const cart_item_id = parseInt(req.params.id);
+    const { quantity } = req.body;
+    const user_id = req.user.user_id;
+
     try {
-        await prisma.cartItem.delete({
-            where: { cart_item_id: id },
+        const updatedCartItem = await prisma.cartItem.updateMany({
+            where: { cart_item_id, user_id, order_id: null }, // Checks to make sure itmes are not checked out
+            data: { quantity },
         });
-        res.json({ message: 'Item deleted' }); // send status code with item deleted
+
+        // If the cart item does not exist or does not belong to the user, return 404
+        if (updatedCartItem.count === 0) {
+            return res.status(404).json({ message: 'Item not found or does not belong to user' });
+        }
+        // If the cart item exists, return the updated cart item
+        res.json(updatedCartItem);
     } catch (error) {
-        console.error   (error.message);
+        console.error(error.message);
+        next(error);
+    }
+});
+
+/// DELETE route to remove an item from the cart
+router.delete('/:id', authenticateToken, async (req, res, next) => {
+    const cart_item_id = parseInt(req.params.id);
+    const user_id = req.user.user_id;
+
+    try {
+        await prisma.cartItem.deleteMany({
+            where: { cart_item_id, user_id, order_id: null },
+        });
+        res.json({ message: 'Item removed from cart' });
+    } catch (error) {
+        console.error(error.message);
         next(error);
     }
 });

@@ -66,25 +66,10 @@ const PostItemForm = ({ isOpen, onClose, setShowPost }) => {
     };
 
     return (
-        <Modal isOpen={isOpen} onRequestClose={()=> setShowPost(false)} className="PostItemForm" contentLabel="Post">
-            <h2>Sign Up</h2>
-            <form onSubmit={handlePostItem}>
-                {/* Error message display */}
-                {error && <div className="error-message">{error}</div>}
-                <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
-                <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" required />
-                <input type="string" value={image_url} onChange={(e) => setImage_url(e.target.value)} placeholder="Image_url" />
-                <input type="int" value={user_id} onChange={(e) => setUser_id(e.target.value)} placeholder="User_id" />
-                <input type="string" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" />
-
-                <button type="submit">Post</button>
-                <button type="button" onClick={() => setShowPost(false)}>Cancel</button>
-            </form>
-        </Modal>
+        <div>
+            <h1>Post Item Form</h1>
+        </div>
     );
-};
+}
 
 export default PostItemForm;
-
-
-
