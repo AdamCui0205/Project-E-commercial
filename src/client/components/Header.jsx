@@ -33,9 +33,7 @@ const Header = ({ onLoginClick, onRegisterClick, setShowPost }) => {
             <div className="logo-container" onClick={handleLogoClick}>
                 <img src="logot.png" alt="Cache Corner Logo" style={{ cursor: 'pointer' }} />
             </div>
-            <div className="search-container">
-                <input type="text" placeholder="Search..." />
-            </div>
+
             <nav className="nav-links">
                 <button onClick={handleShopClick}>Shop</button>
                 {isLoggedIn ? (
