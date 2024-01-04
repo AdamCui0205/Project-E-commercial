@@ -17,7 +17,6 @@ const PostItemForm = ({ isOpen, onClose, setShowPost }) => {
     // Function to handle the form submission
     const  handlePostItem= async (event) => {
         event.preventDefault();
-        console.log("HELLO!!!")
         // Clear any previous error message
         setError('');
 
@@ -46,7 +45,7 @@ const PostItemForm = ({ isOpen, onClose, setShowPost }) => {
             // if (response.ok) {
             //     const data = await response.json();
             //     console.log('Post successful:', data);
-            const response = await axios.post('http://localhost:4200/api/products', productData, {headers:{Authorization: token}})
+            const response = await axios.post('https://cache-corner.onrender.com/api/products', productData, {headers:{Authorization: token}})
             console.log(response);
             // console.log(headers);
             // Store the JWT token in localStorage or sessionStorage
