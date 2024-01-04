@@ -19,21 +19,30 @@ const Header = ({ onLoginClick, onRegisterClick, setShowPost }) => {
         logout();
         navigate('/login');
     };
+
+    const handleLogoClick = () => {
+        navigate('/');
+    };
+
+    const handleShopClick = () => {
+        navigate('/');
+    };
+
     return (
         <header className="header">
-            <div className="logo-container">
-                <img src="logot.png" alt="Cache Corner Logo" />
+            <div className="logo-container" onClick={handleLogoClick}>
+                <img src="logot.png" alt="Cache Corner Logo" style={{ cursor: 'pointer' }} />
             </div>
             <div className="search-container">
                 <input type="text" placeholder="Search..." />
             </div>
             <nav className="nav-links">
+                <button onClick={handleShopClick}>Shop</button>
                 {isLoggedIn ? (
                     <>
                         <button onClick={handlePostClick}>Post</button>
                         <button onClick={handleAccountClick}>Account</button>
                         <button onClick={handleLogoutClick}>Logout</button>
-
                     </>
                 ) : (
                     <>

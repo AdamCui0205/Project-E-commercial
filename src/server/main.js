@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const port = process.env.PORT || 4200;
 
+const port = process.env.PORT || 3000;
+const cors = require('cors');
 
 // Import routes
 const cartItemsRoutes = require('./api/cartItems');
@@ -13,6 +14,7 @@ const authRoutes = require('./auth/auth');
 
 require('dotenv').config();
 
+app.use(cors());
 
 // Middleware for parsing body of incoming requests
 app.use(express.json());
@@ -20,6 +22,7 @@ app.use(express.json());
 // Use the imported routes
 app.use('/api/cart-items', cartItemsRoutes);
 app.use('/api/orders', ordersRoutes);
+console.log('hello');
 app.use('/api/products', productsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/auth', authRoutes);

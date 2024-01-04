@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 productsRouter.get('/', async (req, res, next) => {
     try {
         const products = await prisma.product.findMany();
+        console.log(products);
         res.send(products);
     } catch (error) {
         console.error(error.message);
