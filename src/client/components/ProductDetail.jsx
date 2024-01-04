@@ -8,6 +8,7 @@ export default function ProductDetail() {
 
     useEffect(() => {
         async function fetchProduct() {
+
             try {
                 const response = await fetch(`https://cache-corner.onrender.com/api/products/${id}`);
                 const productData = await response.json();
