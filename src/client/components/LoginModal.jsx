@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { useAuth } from './AuthContext';
 import '../styles/LoginModal.css';
 
-const LoginModal = ({ isOpen, onClose }) => {
+const LoginModal = ({ isOpen, onClose, setUserId }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -14,7 +14,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         setError('');
 
         try {
-            const response = await fetch('https://cache-corner.onrender.com/auth/login', {
+            const response = await fetch('http://localhost:3000/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -25,7 +25,9 @@ const LoginModal = ({ isOpen, onClose }) => {
             if (response.ok) {
                 const data = await response.json();
                 console.log("Login successful:", data);
+                console.log(data.user.user_id);                
                 login(data.token);
+                setUserId(data.user.user_id);
                 onClose();
             } else {
                 const errorData = await response.json();

@@ -7,23 +7,26 @@ import ProductDetail from './components/ProductDetail';
 import PostItemForm from './components/PostItemForm';
 import LoginModal from './components/LoginModal';
 import RegisterModal from './components/RegisterModal';
+import AccountInfo from './components/AccountInfo';
 import { AuthProvider } from "./components/AuthContext";
 
 function App() {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
     const [showPost, setShowPost] = useState(false);
+    const [userId, setUserId] = useState(null);
 
     return (
         <AuthProvider>
             <Router>
-                <Header onLoginClick={() => setShowLogin(true)} onRegisterClick={() => setShowRegister(true)} setShowPost={setShowPost}/>
+                <Header onLoginClick={() => setShowLogin(true)} onRegisterClick={() => setShowRegister(true)} setShowPost={setShowPost} setUserId={setUserId} />
                 <Routes>
                     <Route path="/" element={<ProductList />} />
                     <Route path="/product/:id" element={<ProductDetail />} />
                     <Route path="/post-item" element={<PostItemForm isOpen={showPost} onClose={() => setShowPost(false)} setShowPost={setShowPost}/>} />
+                    <Route path="/account" element={<AccountInfo userId={userId} />} />
                 </Routes>
-                <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
+                <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} setUserId={setUserId} />
                 <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
                 <Footer />
             </Router>
