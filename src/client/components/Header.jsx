@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import '../styles/Header.css';
@@ -5,6 +6,8 @@ import '../styles/Header.css';
 const Header = ({ onLoginClick, onRegisterClick, setShowPost }) => {
     const navigate = useNavigate();
     const { isLoggedIn, logout } = useAuth();
+
+    const [cartCount, setCartCount] = useState(0);
 
     const handlePostClick = () => {
         setShowPost(true)
@@ -28,6 +31,14 @@ const Header = ({ onLoginClick, onRegisterClick, setShowPost }) => {
         navigate('/');
     };
 
+    const handleCartClick = () => {
+        navigate('/cart');
+    };
+
+    const handleAddToCart = () => {
+        setCartCount(cartCount + 1);
+    };
+
     return (
         <header className="header">
             <div className="logo-container" onClick={handleLogoClick}>
@@ -40,6 +51,9 @@ const Header = ({ onLoginClick, onRegisterClick, setShowPost }) => {
                     <>
                         <button onClick={handlePostClick}>Post</button>
                         <button onClick={handleAccountClick}>Account</button>
+                        <button onClick={handleCartClick}>
+                            Cart {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+                        </button>
                         <button onClick={handleLogoutClick}>Logout</button>
                     </>
                 ) : (
