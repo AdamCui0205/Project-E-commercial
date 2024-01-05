@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import '../styles/Header.css';
 
-const Header = ({ onLoginClick, onRegisterClick, setShowPost }) => {
+const Header = ({ onLoginClick, onRegisterClick, setShowPost, setUserId }) => {
     const navigate = useNavigate();
     const { isLoggedIn, logout } = useAuth();
 
@@ -19,6 +19,7 @@ const Header = ({ onLoginClick, onRegisterClick, setShowPost }) => {
     };
 
     const handleLogoutClick = () => {
+        setUserId(null);
         logout();
         navigate('/login');
     };

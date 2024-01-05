@@ -59,7 +59,7 @@ router.post('/login', async (req, res, next) => {
 
         if (user && await bcrypt.compare(password, user.password)) {
             const token = jwt.sign({ user_id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.json({ token });
+            res.json({ token, user });
         } else {
             res.status(401).json({ message: 'Invalid email or password' }); // Adjust the message as per your field used for login
         }
