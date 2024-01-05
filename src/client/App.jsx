@@ -7,12 +7,18 @@ import ProductDetail from './components/ProductDetail';
 import PostItemForm from './components/PostItemForm';
 import LoginModal from './components/LoginModal';
 import RegisterModal from './components/RegisterModal';
+import Cart from './components/Cart';
 import { AuthProvider } from "./components/AuthContext";
 
 function App() {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
     const [showPost, setShowPost] = useState(false);
+    const [cart, setCart] = useState([]);
+
+    const updateCart = (newCart) => {
+        setCart(newCart);
+    };
 
     return (
         <AuthProvider>
@@ -21,7 +27,8 @@ function App() {
                 <Routes>
                     <Route path="/" element={<ProductList />} />
                     <Route path="/product/:id" element={<ProductDetail />} />
-                    <Route path="/post-item" element={<PostItemForm isOpen={showPost} onClose={() => setShowPost(false)} setShowPost={setShowPost}/>} />
+                    <Route path="/post-item" element={<PostItemForm isOpen={showPost} onClose={() => setShowPost(false)} setShowPost={setShowPost} updateCart={updateCart}/>} />
+                    <Route path="/cart" element={<Cart cart={cart} updateCart={updateCart} />} />
                 </Routes>
                 <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
                 <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
