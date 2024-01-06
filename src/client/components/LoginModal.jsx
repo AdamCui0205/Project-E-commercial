@@ -14,7 +14,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         setError('');
 
         try {
-            const response = await fetch('https://cache-corner.onrender.com/auth/login', {
+            const response = await fetch('https://localhost:4200/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

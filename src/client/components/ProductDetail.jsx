@@ -10,7 +10,7 @@ export default function ProductDetail() {
         async function fetchProduct() {
 
             try {
-                const response = await fetch(`https://cache-corner.onrender.com/api/products/${id}`);
+                const response = await fetch(`https://localhost:4200/api/products/${id}`);
                 const productData = await response.json();
                 setProductInfo(productData);
             } catch (error) {
@@ -19,6 +19,34 @@ export default function ProductDetail() {
         }
         fetchProduct();
     }, [id]);
+
+    const handleAddToCart = async () => {
+        try {
+            const response = await fetch('https://localhost:4200/api/cart-items', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    product_id: id,
+                    quantity: 1, // You can customize the quantity as needed
+                }),
+            });
+
+            if (response.ok) {
+                // Assume the API returns the updated cart after adding an item
+                const updatedCart = await response.json();
+                console.log('Item added to cart:', updatedCart);
+
+                // You can navigate to the cart page or display a notification to the user
+            } else {
+                console.error('Failed to add item to cart:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error adding item to cart:', error);
+        }
+    };
+
 
     if (!productInfo) {
         return <div>Loading...</div>; // Display while data is loading
@@ -34,6 +62,7 @@ export default function ProductDetail() {
                 <p>Category: {productInfo.category}</p>
                 <p>Price: ${productInfo.price.toFixed(2)}</p>
                 <p>Available: {productInfo.is_available ? "Yes" : "No"}</p>
+                <button onClick={handleAddToCart}>Add to Cart</button>
                 <button onClick={() => navigate(-1)}>Go Back</button>
             </div>
         </section>
