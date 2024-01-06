@@ -4,7 +4,8 @@ const prisma = new PrismaClient()
 // const secretKey = process.env.JWT_SECRET;
 
 async function authenticateToken(req, res, next) {
-    const token = req.headers['authorization'];
+    const authHeader = req.headers["authorization"];
+    const [bearer, token] = authHeader.split(' ');
 
     if (!token) return res.status(401).json({ message: 'No token provided' });
     const isValid = jwt.verify(token, process.env.JWT_SECRET)

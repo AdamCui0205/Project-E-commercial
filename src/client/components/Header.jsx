@@ -19,7 +19,6 @@ const Header = ({ onLoginClick, onRegisterClick, setShowPost, setUserId }) => {
     };
 
     const handleLogoutClick = () => {
-        setUserId(null);
         logout();
         navigate('/login');
     };

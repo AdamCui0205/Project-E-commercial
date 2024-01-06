@@ -28,11 +28,11 @@ function App() {
                 <Routes>
                     <Route path="/" element={<ProductList />} />
                     <Route path="/product/:id" element={<ProductDetail />} />
-                    <Route path="/account" element={<AccountInfo userId={userId} />} />
+                    <Route path="/account" element={<AccountInfo />} />
                     <Route path="/post-item" element={<PostItemForm isOpen={showPost} onClose={() => setShowPost(false)} setShowPost={setShowPost} updateCart={updateCart}/>} />
                     <Route path="/cart" element={<Cart cart={cart} updateCart={updateCart} />} />
                 </Routes>
-                <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} setUserId={setUserId} />
+                <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)}/>
                 <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
                 <Footer />
             </Router>
