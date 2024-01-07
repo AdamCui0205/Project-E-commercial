@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
-    cloud_name: 'dtnm1xt5q',
-    api_key: '716463253383252',
-    api_secret: 'QK7ClPf4QtbGzk9gtMgVflQWv80'
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 const path = require('path');
 const port = process.env.PORT || 4200;
