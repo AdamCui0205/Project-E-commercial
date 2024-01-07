@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import '../styles/PostItemForm.css';
 const PostItemForm = ({ isOpen, onClose }) => {
     // State hooks for form fields
     const [title, setTitle] = useState('');
