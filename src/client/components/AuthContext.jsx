@@ -11,10 +11,9 @@ export const AuthProvider = ({ children }) => {
         const storedUserId = localStorage.getItem('user_id');
         if (token && storedUserId) {
             setIsLoggedIn(true);
-            setUserId(parseInt(storedUserId));
+            setUserId(parseInt(storedUserId, 10));
         }
     }, []);
-
     const login = (token, userId) => {
         localStorage.setItem('token', token);
         localStorage.setItem('user_id', userId.toString());
