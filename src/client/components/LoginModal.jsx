@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { useAuth } from './AuthContext';
 import '../styles/LoginModal.css';
 
-const LoginModal = ({ isOpen, onClose, setUserId }) => {
+const LoginModal = ({ isOpen, onClose}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -26,8 +26,7 @@ const LoginModal = ({ isOpen, onClose, setUserId }) => {
                 const data = await response.json();
                 console.log("Login successful:", data);
                 console.log(data.user.user_id);                
-                login(data.token);
-                setUserId(data.user.user_id);
+                login(data.token,data.user.user_id);
                 onClose();
             } else {
                 const errorData = await response.json();

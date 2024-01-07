@@ -15,7 +15,6 @@ function App() {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
     const [showPost, setShowPost] = useState(false);
-    const [userId, setUserId] = useState(null);
     const [cart, setCart] = useState([]);
     const updateCart = (newCart) => {
         setCart(newCart);
@@ -24,15 +23,15 @@ function App() {
     return (
         <AuthProvider>
             <Router>
-                <Header onLoginClick={() => setShowLogin(true)} onRegisterClick={() => setShowRegister(true)} setShowPost={setShowPost} setUserId={setUserId} />
+                <Header onLoginClick={() => setShowLogin(true)} onRegisterClick={() => setShowRegister(true)} setShowPost={setShowPost}/>
                 <Routes>
                     <Route path="/" element={<ProductList />} />
                     <Route path="/product/:id" element={<ProductDetail />} />
-                    <Route path="/account" element={<AccountInfo userId={userId} />} />
+                    <Route path="/account" element={<AccountInfo />} />
                     <Route path="/post-item" element={<PostItemForm isOpen={showPost} onClose={() => setShowPost(false)} setShowPost={setShowPost} updateCart={updateCart}/>} />
                     <Route path="/cart" element={<Cart cart={cart} updateCart={updateCart} />} />
                 </Routes>
-                <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} setUserId={setUserId} />
+                <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)}/>
                 <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
                 <Footer />
             </Router>
