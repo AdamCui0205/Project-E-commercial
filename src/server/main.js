@@ -19,24 +19,21 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the uploads directory
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Use the imported routes
 app.use('/api/cart-items', cartItemsRoutes);
 app.use('/api/orders', ordersRoutes);
-console.log('hello');
 app.use('/api/products', productsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/auth', authRoutes);
 
-// Serve static files
-const viteBuildPath = path.join(process.cwd(), 'dist');
-
+// Serve static files for the frontend
+const viteBuildPath = path.join(__dirname, '../dist');
 app.use(express.static(viteBuildPath));
 
-// The catch-all route: for any request that doesn't match other routes,
-// send back the app's index.html file.
-app.get('*', (req, res) => {
+// Serve index.html for all non-API routes (for SPA routing)
+app.get(/^(?!\/api\/).*/, (req, res) => {
     res.sendFile(path.resolve(viteBuildPath, 'index.html'), (err) => {
         if (err) {
             console.error('Error sending index.html:', err);
