@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
+import '../styles/PostItemForm.css';
 
 const PostItemForm = ({ isOpen, onClose }) => {
     const [title, setTitle] = useState('');
