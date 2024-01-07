@@ -28,8 +28,13 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(false);
     };
 
+    const registerSuccess = (token) => {
+        localStorage.setItem('token', token);
+        setIsLoggedIn(true);
+    };
+
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, login, logout, registerSuccess }}>
             {children}
         </AuthContext.Provider>
     );
