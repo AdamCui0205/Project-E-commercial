@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import '../styles/RegisterModal.css';
 import {useAuth} from "./AuthContext";
+import {useNavigate} from "react-router-dom";
+
+const navigate = useNavigate();
 
 const RegisterModal = ({ isOpen, onClose }) => {
     // State hooks for form fields
@@ -50,6 +53,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
                 const data = await response.json();
                 registerSuccess(data.token);
                 onClose();
+                navigate('/');
             } else {
                 const errorData = await response.json();
                 console.error('Registration failed:', errorData.message);
