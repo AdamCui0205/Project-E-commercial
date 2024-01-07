@@ -13,7 +13,6 @@ const PostItemForm = ({ isOpen, onClose }) => {
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
-    const cloudinaryUploadPreset = 'cachecorner';
 
     const handlePostItem = async (event) => {
         event.preventDefault();
@@ -24,34 +23,25 @@ const PostItemForm = ({ isOpen, onClose }) => {
             return;
         }
 
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('price', parseFloat(price));
+        formData.append('category', category);
+        formData.append('description', description);
+        if (image) {
+            formData.append('image', image);
+        }
+
         try {
-            let imageUrl = '';
-            if (image) {
-                const formData = new FormData();
-                formData.append('file', image);
-                formData.append('upload_preset', cloudinaryUploadPreset);
-
-                const cloudinaryResponse = await axios.post(
-                    `https://api.cloudinary.com/v1_1/${process.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
-                    formData
-                );
-
-                imageUrl = cloudinaryResponse.data.secure_url;
-            }
-
-            const productData = {
-                title,
-                price: parseFloat(price),
-                category,
-                description,
-                image_url: imageUrl
-            };
-
             const token = localStorage.getItem('token');
             const response = await axios.post(
                 'https://cache-corner.onrender.com/api/products',
-                productData,
-                { headers: { Authorization: token } }
+                formData,
+                {
+                    headers: {
+                        Authorization: token
+                    }
+                }
             );
 
             if (response.status === 201) {
@@ -66,8 +56,7 @@ const PostItemForm = ({ isOpen, onClose }) => {
         }
     };
 
-
-return (
+    return (
         <Modal isOpen={isOpen} onRequestClose={onClose} className="PostItemForm">
             <h2>Post a New Product</h2>
             <form onSubmit={handlePostItem}>

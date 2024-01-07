@@ -1,7 +1,7 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const authenticateToken = require('../auth/authenticateToken');
-const cloudinary = require("cloudinary");
+const cloudinary = require('cloudinary').v2;
 const productsRouter = express.Router();
 const prisma = new PrismaClient();
 productsRouter.get('/', async (req, res, next) => {
@@ -30,7 +30,7 @@ productsRouter.get('/:id', async (req, res, next) => {
 
 productsRouter.post('/', authenticateToken, async (req, res) => {
     const { title, description, price, category } = req.body;
-    const imageFile = req.files?.image; // This is the file object from express-fileupload
+    const imageFile = req.files?.image; // Image file from express-fileupload
 
     try {
         let imageUrl = '';
@@ -38,9 +38,7 @@ productsRouter.post('/', authenticateToken, async (req, res) => {
             // Upload the image to Cloudinary
             const result = await new Promise((resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(
-                    {
-                        resource_type: 'auto'
-                    },
+                    { resource_type: 'auto' },
                     (error, result) => {
                         if (error) reject(error);
                         else resolve(result);
@@ -48,7 +46,6 @@ productsRouter.post('/', authenticateToken, async (req, res) => {
                 );
                 imageFile.data.pipe(uploadStream);
             });
-
             imageUrl = result.url; // URL returned from Cloudinary
         }
 
@@ -60,18 +57,18 @@ productsRouter.post('/', authenticateToken, async (req, res) => {
                 price: parseFloat(price),
                 image_url: imageUrl, // Use the Cloudinary URL
                 is_available: true,
-                user_id: req.user.user_id,
+                user_id: req.user.user_id, // Set by authenticateToken middleware
                 category
             }
         });
 
-        console.log("New product created:", newProduct);
         res.status(201).json(newProduct);
     } catch (err) {
         console.error("Error creating product:", err);
         res.status(500).send(err.message);
     }
 });
+
 
 
 productsRouter.put('/:id', authenticateToken, async (req, res, next) => {
