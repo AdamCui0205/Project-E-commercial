@@ -34,12 +34,14 @@ productsRouter.post('/', authenticateToken, upload.single('image'), async (req, 
     const image = req.file;
 
     try {
+        const imageUrl = image ? `https://cache-corner.onrender.com/src/server/uploads/${image.filename}` : null;
+
         const newProduct = await prisma.product.create({
             data: {
                 title,
                 description,
                 price: parseFloat(price),
-                image_url: image ? `../uploads/${image.filename}` : null,
+                image_url: imageUrl, // Use the formed URL
                 is_available: true,
                 user_id: req.user.user_id,
                 category
