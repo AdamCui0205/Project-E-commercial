@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth } from './AuthContext';
 
 const AccountInfo = () => {
-    const { user_id } = useAuth(); // Get user_id from AuthContext
+    const { user_id } = useAuth();
     console.log(`Current user ID: ${user_id}`);
     const [userData, setUserData] = useState({});
     const [isEditing, setIsEditing] = useState(false);
@@ -20,10 +20,14 @@ const AccountInfo = () => {
             }
         };
 
-        if (user_id) {
+        if (!isNaN(user_id)) {
             fetchUserData();
         }
     }, [user_id]);
+
+    const handleChange = (e) => {
+        setUserData({ ...userData, [e.target.name]: e.target.value });
+    };
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -36,10 +40,6 @@ const AccountInfo = () => {
         } catch (error) {
             console.error('Error updating user data:', error);
         }
-    };
-
-    const handleChange = (e) => {
-        setUserData({ ...userData, [e.target.name]: e.target.value });
     };
 
     return (
