@@ -48,7 +48,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
 
             if (response.ok) {
                 const data = await response.json();
-                registerSuccess(data.token);
+                registerSuccess(data.token, data.user_id); // Pass both token and user_id
                 onClose();
                 navigate('/');
             } else {
