@@ -52,10 +52,10 @@ const PostItemForm = ({ isOpen, onClose }) => {
             <form onSubmit={handlePostItem}>
                 {error && <div className="error-message">{error}</div>}
                 <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
                 <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" required />
                 <input type="text" value={image_url} onChange={(e) => setImage_url(e.target.value)} placeholder="Image URL" />
                 <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" />
+                <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
                 <button type="submit">Post Item</button>
                 <button type="button" onClick={onClose}>Cancel</button>
             </form>
