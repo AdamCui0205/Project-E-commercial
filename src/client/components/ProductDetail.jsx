@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import '../styles/ProductDetail.css';
 
 export default function ProductDetail() {
     const [productInfo, setProductInfo] = useState(null);
