@@ -3,7 +3,8 @@ const { PrismaClient } = require('@prisma/client');
 const authenticateToken = require('../auth/authenticateToken');
 const productsRouter = express.Router();
 const prisma = new PrismaClient();
-
+const multer = require('multer');
+const upload = multer({ dest: '../uploads' });
 productsRouter.get('/', async (req, res, next) => {
     try {
         const products = await prisma.product.findMany();
@@ -28,17 +29,17 @@ productsRouter.get('/:id', async (req, res, next) => {
     }
 });
 
-productsRouter.post('/', authenticateToken, async (req, res) => {
-    console.log(req.headers);
-    console.log(req.body);
-    const {description, price, image_url, user_id, category} = req.body
+productsRouter.post('/', authenticateToken, upload.single('image'), async (req, res) => {
+    const { title, description, price, category } = req.body;
+    const image = req.file;
+
     try {
         const newProduct = await prisma.product.create({
             data: {
+                title,
                 description,
-                title: 'testing',
-                price,
-                image_url,
+                price: parseFloat(price),
+                image_url: image ? `../uploads/${image.filename}` : null,
                 is_available: true,
                 user_id: req.user.user_id,
                 category
