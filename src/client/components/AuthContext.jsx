@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = (token) => {
+        console.log(`setting token in local storage: ${token}`)
         localStorage.setItem('token', token);
         setIsLoggedIn(true);
     };

@@ -14,7 +14,7 @@ const LoginModal = ({ isOpen, onClose, setUserId }) => {
         setError('');
 
         try {
-            const response = await fetch('http://localhost:3000/auth/login', {
+            const response = await fetch('http://localhost:4200/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -25,8 +25,12 @@ const LoginModal = ({ isOpen, onClose, setUserId }) => {
             if (response.ok) {
                 const data = await response.json();
                 console.log("Login successful:", data);
-                console.log(data.user.user_id);                
+                console.log(data.user.user_id);     
+                const token = data.token;           
                 login(data.token);
+                console.log(`setting token in local storage: ${token}`)
+                localStorage.setItem('token', token);
+                //setIsLoggedIn(true);
                 setUserId(data.user.user_id);
                 onClose();
             } else {

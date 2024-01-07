@@ -8,10 +8,13 @@ const router = express.Router();
 // Get all of the user's cart items
 router.get('/', authenticateToken, async (req, res, next) => {
     const user_id = req.user.user_id; // Extract user_id from the authenticated user
+    console.log("logged in as user", req.user)
+    console.log(`retrieving cart for user with id: ${user_id}`)
+    console.log(`token passed to endpoint is: ${req.header['authorization']}`)
 
     try {
         const cartItems = await prisma.cartItem.findMany({
-            where: { user_id, order_id: null },
+            where: { user_id: user_id },
             include: { product: true } // Includes related product details
         });
         res.json(cartItems);
@@ -55,12 +58,14 @@ router.post('/', authenticateToken, async (req, res, next) => {
             const updatedCartItem = await prisma.cartItem.update({
                 where: { cart_item_id: existingItem.cart_item_id },
                 data: { quantity: existingItem.quantity + quantity }, // todo: Make sure front-end takes quantity into account
+                include: {product: true}, //include related product details in the response
             });
             res.status(200).json(updatedCartItem);
         } else {
             // If not, create a new cart item
             const newCartItem = await prisma.cartItem.create({
                 data: { product_id, quantity, user_id },
+                include: { product:true }, //include related product details in the response
             });
             res.status(201).json(newCartItem);
         }
@@ -80,13 +85,21 @@ router.put('/:id', authenticateToken, async (req, res, next) => {
         const updatedCartItem = await prisma.cartItem.updateMany({
             where: { cart_item_id, user_id, order_id: null }, // Checks to make sure itmes are not checked out
             data: { quantity },
+            include: { product: true }, //include related product details in response
         });
 
         // If the cart item does not exist or does not belong to the user, return 404
         if (updatedCartItem.count === 0) {
             return res.status(404).json({ message: 'Item not found or does not belong to user' });
         }
+
+        //Fetch the updated cart items after the update
+        const updatedCart = await prisma.cartItem.findMany({
+            where: { user_id, order_id:null },
+            include: { product: true },
+        });
         // If the cart item exists, return the updated cart item
+        res.json(updatedCart);
         res.json(updatedCartItem);
     } catch (error) {
         console.error(error.message);

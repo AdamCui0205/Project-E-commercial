@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
 
@@ -11,7 +12,13 @@ const Cart = () => {
 
     const fetchCartItems = async () => {
         try {
-            const response = await axios.get(`http://localhost:4200/api/cart-items`); // Adjust the URL as needed
+            const token = localStorage.getItem('token');
+            console.log(`token from local storage: ${token}`)
+            const response = await axios.get(`http://localhost:4200/api/cart-items`, {
+                headers: {
+                    'authorization': `${token}`
+                }
+            }); // Adjust the URL as needed
             setCartItems(response.data);
         } catch (error) {
             console.error('Error fetching cart items:', error.message);

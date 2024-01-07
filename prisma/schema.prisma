@@ -1,10 +1,10 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
 }
 
 model User {
@@ -20,22 +20,25 @@ model User {
   city         String
   state        String
   zip          String
-  orders       Order[]
+  username     String
+  can_sell     Boolean
   products     Product[]
+  orders       Order[]
+  cartitems    CartItem[]
 }
 
 model Product {
   product_id   Int        @id @default(autoincrement())
   description  String
-  title        String
+  title        String    
   price        Float
   image_url    String
   post_date    DateTime   @default(now())
-  is_available Boolean
+  is_available Boolean    
   user_id      Int
   category     String
-  cartItems    CartItem[]
   user         User       @relation(fields: [user_id], references: [user_id])
+  cartItems    CartItem[]
 }
 
 model Order {
@@ -44,8 +47,8 @@ model Order {
   date_ordered DateTime   @default(now())
   user_id      Int
   is_open      Boolean
-  cartItems    CartItem[]
   user         User       @relation(fields: [user_id], references: [user_id])
+  cartItems    CartItem[]
 }
 
 model CartItem {
@@ -56,6 +59,8 @@ model CartItem {
   order_id     Int
   price        Float
   quantity     Int
-  order        Order    @relation(fields: [order_id], references: [order_id])
   product      Product  @relation(fields: [product_id], references: [product_id])
+  order        Order    @relation(fields: [order_id], references: [order_id])
+  user_id      Int
+  user         User       @relation(fields: [user_id], references: [user_id])
 }

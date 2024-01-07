@@ -45,7 +45,7 @@ const PostItemForm = ({ isOpen, onClose, setShowPost }) => {
             // if (response.ok) {
             //     const data = await response.json();
             //     console.log('Post successful:', data);
-            const response = await axios.post('https://cache-corner.onrender.com/api/products', productData, {headers:{Authorization: token}})
+            const response = await axios.post('https://localhost:4200.com/api/products', productData, {headers:{Authorization: token}})
             console.log(response);
             // console.log(headers);
             // Store the JWT token in localStorage or sessionStorage

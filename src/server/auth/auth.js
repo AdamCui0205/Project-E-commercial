@@ -34,12 +34,14 @@ router.post('/register', async (req, res, next) => {
                 addressLine2,
                 city,
                 state,
-                zip
-            },
+                zip,
+                username: 'wow',
+                can_sell: 't'
+             },
         });
 
         // Create a JWT token for the new user
-        const token = jwt.sign({ user_id: newUser.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ user_id: newUser.user_id }, process.env.JWT_SECRET, { expiresIn: '10d' });
 
         // Send the token in the response
         res.status(201).json({ token });
@@ -52,13 +54,18 @@ router.post('/register', async (req, res, next) => {
 
 router.post('/login', async (req, res, next) => {
     const { email, password } = req.body;
+    console.log(`logging in user with credentials email: ${email} password: ${password}`)
     try {
         const user = await prisma.user.findUnique({
             where: { email: email }, // Replace 'email' with 'username' if 'username' is unique
         });
+        // FIXME when there is no user in the database return a "no user found error" to the frontend when user == null
+
+        console.log(`retrieved user from database:`, user)
 
         if (user && await bcrypt.compare(password, user.password)) {
             const token = jwt.sign({ user_id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            console.log(`issueing token to user: ${token}`)
             res.json({ token, user });
         } else {
             res.status(401).json({ message: 'Invalid email or password' }); // Adjust the message as per your field used for login

@@ -9,7 +9,7 @@ export default function AccountInfo({userId}) {
         async function fetchUser() {
 
             try {
-                const response = await fetch(`http://localhost:3000/api/users/${userId}`);
+                const response = await fetch(`http://localhost:4200/api/users/${userId}`);
                 const userData = await response.json();
                 console.log(userData);
                 setUserInfo(userData);
