@@ -36,7 +36,7 @@ productsRouter.post('/', authenticateToken, upload.single('image'), async (req, 
     const image = req.file;
 
     // Form the URL for the uploaded image
-    const imageUrl = image ? `https://cache-corner.onrender.com/src/server/uploads/${image.filename}` : null;
+    const imageUrl = image ? `https://cache-corner.onrender.com/uploads/${image.filename}` : null;
 
     console.log("Image URL:", imageUrl); // Log the formed URL
 
