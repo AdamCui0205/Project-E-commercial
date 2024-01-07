@@ -1,84 +1,63 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import '../styles/PostItemForm.css';
 import axios from 'axios';
 
-const PostItemForm = ({ isOpen, onClose, setShowPost }) => {
-    // State hooks for form fields
-    console.log("hello from post item form")
-    const [description, setDescription] = useState('');
+const PostItemForm = ({ isOpen, onClose }) => {
     const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [image_url, setImage_url] = useState('');
-    const [user_id, setUser_id] = useState('');
     const [category, setCategory] = useState('');
     const [error, setError] = useState('');
 
-    // Function to handle the form submission
-    const  handlePostItem= async (event) => {
+    const handlePostItem = async (event) => {
         event.preventDefault();
-        // Clear any previous error message
         setError('');
 
+        if (!title || !description || !price) {
+            setError('Please fill in all required fields.');
+            return;
+        }
+
         const productData = {
-            description,
             title,
+            description,
             price: parseFloat(price),
             image_url,
-            user_id,
             category,
         };
 
         try {
             const token = window.localStorage.getItem('token');
-            console.log("token", token)
-            // console.log(token);
-            // const response = await fetch('https://cache-corner.onrender.com/api/products', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'authorization': String(token)
-            //     },
-            //     body: JSON.stringify(productData)
-            // });
+            const response = await axios.post('/api/products', productData, {
+                headers: {
+                    Authorization: token
+                }
+            });
 
-            // if (response.ok) {
-            //     const data = await response.json();
-            //     console.log('Post successful:', data);
-            const response = await axios.post('https://cache-corner.onrender.com/api/products', productData, {headers:{Authorization: token}})
-            console.log(response);
-            // console.log(headers);
-            // Store the JWT token in localStorage or sessionStorage
-
-            // Close the modal if Post is successful
-            onClose();
-            // } else {
-            //     const errorData = await response.json();
-            //     console.error('Post failed:', errorData.message);
-            //     // Set error message if request fails
-            //     setError('Failed to post product:', errorData.message);
-            // }
-        } catch (error) {
-            console.error('Error during posting:', error);
-            // Set error message if request fails
-            setError('An error occurred during posting.');
+            if (response.status === 201) {
+                onClose(); // Close the modal on successful post
+            } else {
+                setError('Failed to post the product');
+            }
+        } catch (err) {
+            setError('An error occurred while posting the product.');
+            console.error('Posting error:', err);
         }
     };
 
     return (
-        <Modal isOpen={isOpen} onRequestClose={()=> setShowPost(false)} className="PostItemForm" contentLabel="Post">
-            <h2>Sign Up</h2>
+        <Modal isOpen={isOpen} onRequestClose={onClose} contentLabel="Post a New Product">
+            <h2>Sell your item.</h2>
             <form onSubmit={handlePostItem}>
-                {/* Error message display */}
                 {error && <div className="error-message">{error}</div>}
-                <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
+                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
+                <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
                 <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" required />
-                <input type="string" value={image_url} onChange={(e) => setImage_url(e.target.value)} placeholder="Image_url" />
-                <input type="int" value={user_id} onChange={(e) => setUser_id(e.target.value)} placeholder="User_id" />
-                <input type="string" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" />
-
-                <button type="submit">Post</button>
-                <button type="button" onClick={() => setShowPost(false)}>Cancel</button>
+                <input type="text" value={image_url} onChange={(e) => setImage_url(e.target.value)} placeholder="Image URL" />
+                <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" />
+                <button type="submit">Post Item</button>
+                <button type="button" onClick={onClose}>Cancel</button>
             </form>
         </Modal>
     );
