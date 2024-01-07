@@ -3,8 +3,6 @@ const { PrismaClient } = require('@prisma/client');
 const authenticateToken = require('../auth/authenticateToken');
 const productsRouter = express.Router();
 const prisma = new PrismaClient();
-const multer = require('multer');
-const upload = multer({ dest: '../uploads' });
 productsRouter.get('/', async (req, res, next) => {
     try {
         const products = await prisma.product.findMany();
@@ -29,36 +27,51 @@ productsRouter.get('/:id', async (req, res, next) => {
     }
 });
 
-productsRouter.post('/', authenticateToken, upload.single('image'), async (req, res) => {
-    console.log("File received:", req.file); // Log the file information
-
+productsRouter.post('/', authenticateToken, async (req, res) => {
     const { title, description, price, category } = req.body;
-    const image = req.file;
-
-    // Form the URL for the uploaded image
-    const imageUrl = image ? `https://cache-corner.onrender.com/uploads/${image.filename}` : null;
-
-    console.log("Image URL:", imageUrl); // Log the formed URL
+    const imageFile = req.files?.image; // This is the file object from express-fileupload
 
     try {
+        let imageUrl = '';
+        if (imageFile) {
+            // Upload the image to Cloudinary
+            const result = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    {
+                        resource_type: 'auto'
+                    },
+                    (error, result) => {
+                        if (error) reject(error);
+                        else resolve(result);
+                    }
+                );
+                imageFile.data.pipe(uploadStream);
+            });
+
+            imageUrl = result.url; // URL returned from Cloudinary
+        }
+
+        // Create a new product with the image URL from Cloudinary
         const newProduct = await prisma.product.create({
             data: {
                 title,
                 description,
                 price: parseFloat(price),
-                image_url: imageUrl,
+                image_url: imageUrl, // Use the Cloudinary URL
                 is_available: true,
                 user_id: req.user.user_id,
                 category
             }
         });
-        console.log("New product created:", newProduct); // Log the created product
+
+        console.log("New product created:", newProduct);
         res.status(201).json(newProduct);
     } catch (err) {
-        console.error("Error creating product:", err); // Log any errors
+        console.error("Error creating product:", err);
         res.status(500).send(err.message);
     }
 });
+
 
 productsRouter.put('/:id', authenticateToken, async (req, res, next) => {
     const productId = parseInt(req.params.id);

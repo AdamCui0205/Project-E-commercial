@@ -1,11 +1,9 @@
+import axios from 'axios';
 import { useState } from 'react';
 import Modal from 'react-modal';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../styles/PostItemForm.css';
 
 const PostItemForm = ({ isOpen, onClose }) => {
-    // State hooks for form fields
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
@@ -14,8 +12,8 @@ const PostItemForm = ({ isOpen, onClose }) => {
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
+    const cloudinaryUploadPreset = 'cachecorner';
 
-    // Function to handle the form submission
     const handlePostItem = async (event) => {
         event.preventDefault();
         setError('');
@@ -25,26 +23,34 @@ const PostItemForm = ({ isOpen, onClose }) => {
             return;
         }
 
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('price', parseFloat(price));
-        formData.append('category', category);
-        formData.append('description', description);
-        if (image) {
-            formData.append('image', image);
-        }
-
         try {
+            let imageUrl = '';
+            if (image) {
+                const formData = new FormData();
+                formData.append('file', image);
+                formData.append('upload_preset', cloudinaryUploadPreset);
+
+                const cloudinaryResponse = await axios.post(
+                    `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
+                    formData
+                );
+
+                imageUrl = cloudinaryResponse.data.secure_url;
+            }
+
+            const productData = {
+                title,
+                price: parseFloat(price),
+                category,
+                description,
+                image_url: imageUrl
+            };
+
             const token = localStorage.getItem('token');
             const response = await axios.post(
                 'https://cache-corner.onrender.com/api/products',
-                formData,
-                {
-                    headers: {
-                        Authorization: token,
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
+                productData,
+                { headers: { Authorization: token } }
             );
 
             if (response.status === 201) {
@@ -59,7 +65,8 @@ const PostItemForm = ({ isOpen, onClose }) => {
         }
     };
 
-    return (
+
+return (
         <Modal isOpen={isOpen} onRequestClose={onClose} className="PostItemForm">
             <h2>Post a New Product</h2>
             <form onSubmit={handlePostItem}>
