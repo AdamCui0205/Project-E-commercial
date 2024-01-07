@@ -37,22 +37,20 @@
 }
 
 .PostItemForm textarea {
-    height: 100px;
+    height: 150px;
     resize: vertical;
 }
 
 .PostItemForm button {
     background-color: rebeccapurple;
     color: white;
-    padding: 10px;
-    margin-bottom: 8px;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
     width: 100%;
-    box-sizing: border-box;
 }
 
 .PostItemForm button:hover {
@@ -62,9 +60,9 @@
 @media (max-width: 600px) {
     .PostItemForm {
         width: 95%;
-        max-width: 350px;
-        top: 10%;
+        max-width: none;
         padding: 15px;
+        top: 30%;
     }
 
     .PostItemForm h2 {
@@ -74,7 +72,6 @@
     .PostItemForm input,
     .PostItemForm textarea,
     .PostItemForm button {
-        padding: 8px;
-        font-size: 12px;
+        font-size: 14px;
     }
 }
