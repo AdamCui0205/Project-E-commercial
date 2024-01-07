@@ -28,23 +28,23 @@ productsRouter.get('/:id', async (req, res, next) => {
     }
 });
 
+const express = require('express');
+const { PrismaClient } = require('@prisma/client');
+const authenticateToken = require('../auth/authenticateToken');
+const cloudinary = require('cloudinary').v2;
+const productsRouter = express.Router();
+const prisma = new PrismaClient();
+
 productsRouter.post('/', authenticateToken, async (req, res) => {
     const { title, description, price, category } = req.body;
-    const imageFile = req.files?.image; // Image file from express-fileupload
+    const imageFile = req.files?.image;
 
     try {
         let imageUrl = '';
         if (imageFile) {
             // Upload the image to Cloudinary
-            const result = await new Promise((resolve, reject) => {
-                const uploadStream = cloudinary.uploader.upload_stream(
-                    { resource_type: 'auto' },
-                    (error, result) => {
-                        if (error) reject(error);
-                        else resolve(result);
-                    }
-                );
-                imageFile.data.pipe(uploadStream);
+            const result = await cloudinary.uploader.upload(imageFile.tempFilePath, {
+                resource_type: 'auto'
             });
             imageUrl = result.url; // URL returned from Cloudinary
         }
@@ -68,6 +68,8 @@ productsRouter.post('/', authenticateToken, async (req, res) => {
         res.status(500).send(err.message);
     }
 });
+
+module.exports = productsRouter;
 
 
 
