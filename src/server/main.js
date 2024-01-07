@@ -10,7 +10,8 @@ const ordersRoutes = require('./api/orders');
 const productsRoutes = require('./api/products');
 const usersRoutes = require('./api/users');
 const authRoutes = require('./auth/auth');
-
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 require('dotenv').config();
 
 app.use(cors());
@@ -18,8 +19,7 @@ app.use(cors());
 // Middleware for parsing body of incoming requests
 app.use(express.json());
 
-// Serve static files from the uploads directory
-app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
+
 
 // Use the imported routes
 app.use('/api/cart-items', cartItemsRoutes);
@@ -32,16 +32,6 @@ app.use('/auth', authRoutes);
 const viteBuildPath = path.join(process.cwd(), 'dist');
 app.use(express.static(viteBuildPath));
 
-// The catch-all route: for any request that doesn't match other routes,
-// send back the app's index.html file.
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(viteBuildPath, 'index.html'), (err) => {
-        if (err) {
-            console.error('Error sending index.html:', err);
-            res.status(500).send(err.message);
-        }
-    });
-});
 
 // Handle 404 errors
 app.use((req, res) => {
