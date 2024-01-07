@@ -14,6 +14,18 @@ const PostItemForm = ({ isOpen, onClose }) => {
 
     const navigate = useNavigate();
 
+    const categories = [
+        'Clothing',
+        'Furniture',
+        'Books',
+        'Electronics',
+        'Toys & Games',
+        'Art & Decor',
+        'Kitchenware',
+        'Sporting Goods',
+        'Miscellaneous'
+    ];
+
     const handlePostItem = async (event) => {
         event.preventDefault();
         setError('');
@@ -63,7 +75,12 @@ const PostItemForm = ({ isOpen, onClose }) => {
                 {error && <div className="error-message">{error}</div>}
                 <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
                 <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" required />
-                <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Category" />
+                <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+                    <option value="">Select a Category</option>
+                    {categories.map(cat => (
+                        <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                </select>
                 <input type="file" onChange={(e) => setImage(e.target.files[0])} />
                 <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" required />
                 <button type="submit">Post Item</button>
