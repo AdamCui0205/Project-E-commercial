@@ -28,12 +28,13 @@ app.use('/api/products', productsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/auth', authRoutes);
 
-// Serve static files for the frontend
-const viteBuildPath = path.join(__dirname, '../dist');
+// Serve static files
+const viteBuildPath = path.join(process.cwd(), 'dist');
 app.use(express.static(viteBuildPath));
 
-// Serve index.html for all non-API routes (for SPA routing)
-app.get(/^(?!\/api\/).*/, (req, res) => {
+// The catch-all route: for any request that doesn't match other routes,
+// send back the app's index.html file.
+app.get('*', (req, res) => {
     res.sendFile(path.resolve(viteBuildPath, 'index.html'), (err) => {
         if (err) {
             console.error('Error sending index.html:', err);
