@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Footer from './components/Footer';
 import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
 import PostItemForm from './components/PostItemForm';
@@ -34,7 +33,6 @@ function App() {
                 </Routes>
                 <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} setUserId={setUserId} />
                 <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
-                <Footer />
             </Router>
         </AuthProvider>
     );
