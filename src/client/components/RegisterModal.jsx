@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import '../styles/RegisterModal.css';
+import {useAuth} from "./AuthContext";
 
 const RegisterModal = ({ isOpen, onClose }) => {
     // State hooks for form fields
@@ -14,7 +15,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [zip, setZip] = useState('');
-    // State hook for error message
+    const { registerSuccess } = useAuth();
     const [error, setError] = useState('');
 
     // Function to handle the form submission
@@ -47,16 +48,11 @@ const RegisterModal = ({ isOpen, onClose }) => {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log('Registration successful:', data);
-
-                // Store the JWT token in localStorage or sessionStorage
-                localStorage.setItem('token', data.token);
-                // Close the modal if registration is successful
+                registerSuccess(data.token);
                 onClose();
             } else {
                 const errorData = await response.json();
                 console.error('Registration failed:', errorData.message);
-                // Set error message if request fails
                 setError(errorData.message);
             }
         } catch (error) {
