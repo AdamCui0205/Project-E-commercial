@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function ProductDetail() {
     const [productInfo, setProductInfo] = useState(null);
@@ -7,35 +8,31 @@ export default function ProductDetail() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        async function fetchProduct() {
-
+        const fetchProduct = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/products/${id}`);
-                const productData = await response.json();
-                setProductInfo(productData);
+                const response = await axios.get(`/api/products/${id}`);
+                setProductInfo(response.data);
             } catch (error) {
                 console.error('Failed to fetch product:', error);
             }
-        }
+        };
         fetchProduct();
     }, [id]);
 
     if (!productInfo) {
-        return <div>Loading...</div>; // Display while data is loading
+        return <div>Loading...</div>;
     }
 
     return (
-        <section>
+        <div className="product-detail">
             <h2>{productInfo.title}</h2>
-            <img src={productInfo.image_url} alt={`${productInfo.title} Image`} />
-            <div className="details">
-                <p>Description: {productInfo.description}</p>
-                <p>Date Posted: {new Date(productInfo.post_date).toDateString()}</p>
-                <p>Category: {productInfo.category}</p>
-                <p>Price: ${productInfo.price.toFixed(2)}</p>
-                <p>Available: {productInfo.is_available ? "Yes" : "No"}</p>
-                <button onClick={() => navigate(-1)}>Go Back</button>
-            </div>
-        </section>
+            <img src={productInfo.image_url} alt={`${productInfo.title}`} />
+            <p>Description: {productInfo.description}</p>
+            <p>Date Posted: {new Date(productInfo.post_date).toDateString()}</p>
+            <p>Category: {productInfo.category}</p>
+            <p>Price: ${productInfo.price.toFixed(2)}</p>
+            <p>Available: {productInfo.is_available ? "Yes" : "No"}</p>
+            <button onClick={() => navigate(-1)}>Go Back</button>
+        </div>
     );
 }
