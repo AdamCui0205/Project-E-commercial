@@ -19,6 +19,25 @@ export default function ProductDetail() {
         fetchProduct();
     }, [id]);
 
+    const addToCart = async () => {
+        try {
+            const token = localStorage.getItem('token'); // Assuming you use token-based auth
+            const response = await axios.post(
+                '/api/cart-items',
+                { product_id: productInfo.product_id, quantity: 1 }, // Adjust based on your API requirements
+                { headers: { Authorization: token } }
+            );
+
+            if (response.status === 201) {
+                alert('Product added to cart!'); // Replace with a more sophisticated feedback mechanism
+            } else {
+                console.error('Failed to add to cart');
+            }
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+        }
+    };
+
     if (!productInfo) {
         return <div>Loading...</div>;
     }
@@ -32,6 +51,7 @@ export default function ProductDetail() {
             <p>Category: {productInfo.category}</p>
             <p>Price: ${productInfo.price.toFixed(2)}</p>
             <p>Available: {productInfo.is_available ? "Yes" : "No"}</p>
+            <button onClick={addToCart}>Add to Cart</button>
             <button onClick={() => navigate(-1)}>Go Back</button>
         </div>
     );
