@@ -4,13 +4,16 @@ import { useAuth } from './AuthContext';
 
 const AccountInfo = () => {
     const { user_id } = useAuth(); // Get user_id from AuthContext
+    console.log(`Current user ID: ${user_id}`);
     const [userData, setUserData] = useState({});
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
+            console.log(`Making request to fetch user data for ID: ${user_id}`);
             try {
                 const response = await axios.get(`https://cache-corner.onrender.com/api/users/${user_id}`);
+                console.log(`Fetched user data: `, response.data);
                 setUserData(response.data);
             } catch (error) {
                 console.error('Error fetching user data:', error);

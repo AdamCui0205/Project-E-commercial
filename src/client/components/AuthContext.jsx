@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const registerSuccess = (token, userId) => {
+        console.log(`Register success with token: ${token} and userID: ${userId}`);
         login(token, userId);
     };
 
