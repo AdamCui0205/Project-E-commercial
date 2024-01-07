@@ -20,9 +20,6 @@ export default function AccountInfo({userId}) {
         fetchUser();
     }, []);
 
-    if (!userInfo) {
-        return <div>Loading...</div>; // Display while data is loading
-    }
 
     return (
         <section>
