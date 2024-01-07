@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
+import { useAuth } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 import '../styles/RegisterModal.css';
-import {useAuth} from "./AuthContext";
-import {useNavigate} from "react-router-dom";
-
-const navigate = useNavigate();
 
 const RegisterModal = ({ isOpen, onClose }) => {
-    // State hooks for form fields
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -18,13 +15,13 @@ const RegisterModal = ({ isOpen, onClose }) => {
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [zip, setZip] = useState('');
-    const { registerSuccess } = useAuth();
     const [error, setError] = useState('');
 
-    // Function to handle the form submission
+    const { registerSuccess } = useAuth();
+    const navigate = useNavigate();
+
     const handleRegister = async (event) => {
         event.preventDefault();
-        // Clear any previous error message
         setError('');
 
         const userData = {
@@ -56,12 +53,9 @@ const RegisterModal = ({ isOpen, onClose }) => {
                 navigate('/');
             } else {
                 const errorData = await response.json();
-                console.error('Registration failed:', errorData.message);
                 setError(errorData.message);
             }
         } catch (error) {
-            console.error('Error during registration:', error);
-            // Set error message if request fails
             setError('An error occurred during registration.');
         }
     };
@@ -70,7 +64,6 @@ const RegisterModal = ({ isOpen, onClose }) => {
         <Modal isOpen={isOpen} onRequestClose={onClose} className="registerModal" contentLabel="Register">
             <h2>Sign Up</h2>
             <form onSubmit={handleRegister}>
-                {/* Error message display */}
                 {error && <div className="error-message">{error}</div>}
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
@@ -82,7 +75,6 @@ const RegisterModal = ({ isOpen, onClose }) => {
                 <input type="text" value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" />
                 <input type="text" value={state} onChange={(e) => setState(e.target.value)} placeholder="State" />
                 <input type="text" value={zip} onChange={(e) => setZip(e.target.value)} placeholder="ZIP Code" />
-
                 <button type="submit">Sign Up</button>
                 <button type="button" onClick={onClose}>Cancel</button>
             </form>
