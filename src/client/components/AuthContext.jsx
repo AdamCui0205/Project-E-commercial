@@ -16,10 +16,11 @@ export const AuthProvider = ({ children }) => {
     }, []);
     const login = (token, userId) => {
         localStorage.setItem('token', token);
-        localStorage.setItem('user_id', userId.toString());
+        localStorage.setItem('user_id', userId);
         setIsLoggedIn(true);
-        setUserId(parseInt(userId));
+        setUserId(parseInt(userId, 10));
     };
+
 
     const logout = () => {
         localStorage.removeItem('token');
@@ -29,8 +30,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const registerSuccess = (token, userId) => {
-        console.log(`Register success with token: ${token} and userID: ${userId}`);
-        login(token, userId);
+        login(token, userId.toString());
     };
 
     return (
