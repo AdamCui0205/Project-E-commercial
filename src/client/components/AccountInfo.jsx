@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
-
+import '../styles/AccountInfo.css';
 const AccountInfo = () => {
     const { user_id } = useAuth();
     console.log(`Current user ID: ${user_id}`);
@@ -43,7 +43,7 @@ const AccountInfo = () => {
     };
 
     return (
-        <div>
+        <div className="account-info-container">
             {isEditing ? (
                 <div>
                     <input type="email" name="email" value={userData.email || ''} onChange={handleChange} placeholder="Email" />
