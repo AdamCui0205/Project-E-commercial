@@ -6,13 +6,18 @@ const prisma = new PrismaClient();
 
 // Get all users
 // Accessible to everyone
-usersRouter.get('/', async (req, res, next) => {
+usersRouter.get('/:id', async (req, res, next) => {
+    const userId = parseInt(req.params.id);
+    console.log(`Fetching data for user ID: ${userId}`);
     try {
-        const users = await prisma.user.findMany();
-        res.send(users);
+        const user = await prisma.user.findUnique({
+            where: { user_id: userId },
+        });
+        console.log(`Fetched user data: `, user);
+        res.send(user);
     } catch (error) {
-        console.error(err.message);
-        next(error)
+        console.error(error.message);
+        next(error);
     }
 });
 
