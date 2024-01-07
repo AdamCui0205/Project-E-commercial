@@ -48,7 +48,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
 
             if (response.ok) {
                 const data = await response.json();
-                registerSuccess(data.token);
+                registerSuccess(data.token, data.user.user_id); // Assuming the response includes user_id
                 onClose();
                 navigate('/');
             } else {
@@ -75,6 +75,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
                 <input type="text" value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" />
                 <input type="text" value={state} onChange={(e) => setState(e.target.value)} placeholder="State" />
                 <input type="text" value={zip} onChange={(e) => setZip(e.target.value)} placeholder="ZIP Code" />
+
                 <button type="submit">Sign Up</button>
                 <button type="button" onClick={onClose}>Cancel</button>
             </form>

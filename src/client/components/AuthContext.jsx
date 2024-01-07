@@ -1,41 +1,43 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
-const AuthContext = createContext(null);
-
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-    return context;
-};
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        setIsLoggedIn(!!token);
+        const storedUserId = localStorage.getItem('user_id');
+        if (token && storedUserId) {
+            setIsLoggedIn(true);
+            setUserId(storedUserId);
+        }
     }, []);
 
-    const login = (token) => {
+    const login = (token, userId) => {
         localStorage.setItem('token', token);
+        localStorage.setItem('user_id', userId);
         setIsLoggedIn(true);
+        setUserId(userId);
     };
 
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user_id');
         setIsLoggedIn(false);
+        setUserId(null);
     };
 
-    const registerSuccess = (token) => {
-        localStorage.setItem('token', token);
-        setIsLoggedIn(true);
+    const registerSuccess = (token, userId) => {
+        login(token, userId);
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout, registerSuccess }}>
+        <AuthContext.Provider value={{ isLoggedIn, userId, login, logout, registerSuccess }}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+export const useAuth = () => useContext(AuthContext);
