@@ -30,25 +30,32 @@ productsRouter.get('/:id', async (req, res, next) => {
 });
 
 productsRouter.post('/', authenticateToken, upload.single('image'), async (req, res) => {
+    console.log("File received:", req.file); // Log the file information
+
     const { title, description, price, category } = req.body;
     const image = req.file;
 
-    try {
-        const imageUrl = image ? `https://cache-corner.onrender.com/src/server/uploads/${image.filename}` : null;
+    // Form the URL for the uploaded image
+    const imageUrl = image ? `https://cache-corner.onrender.com/src/server/uploads/${image.filename}` : null;
 
+    console.log("Image URL:", imageUrl); // Log the formed URL
+
+    try {
         const newProduct = await prisma.product.create({
             data: {
                 title,
                 description,
                 price: parseFloat(price),
-                image_url: imageUrl, // Use the formed URL
+                image_url: imageUrl,
                 is_available: true,
                 user_id: req.user.user_id,
                 category
             }
         });
+        console.log("New product created:", newProduct); // Log the created product
         res.status(201).json(newProduct);
     } catch (err) {
+        console.error("Error creating product:", err); // Log any errors
         res.status(500).send(err.message);
     }
 });

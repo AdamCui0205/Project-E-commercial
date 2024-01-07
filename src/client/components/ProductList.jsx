@@ -6,10 +6,12 @@ const ProductList = () => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        // Fetch the list of products from the API
         fetch('https://cache-corner.onrender.com/api/products')
             .then(response => response.json())
-            .then(data => setProducts(data))
+            .then(data => {
+                console.log("Fetched products:", data); // Log fetched products
+                setProducts(data);
+            })
             .catch(error => console.error('Error fetching products:', error));
     }, []);
 
