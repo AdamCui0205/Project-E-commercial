@@ -25,17 +25,20 @@
     flex-direction: column;
 }
 
-.PostItemForm input {
+.PostItemForm input,
+.PostItemForm textarea {
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 8px;
     margin-bottom: 8px;
-    font-size: 12px;
+    font-size: 14px;
     width: 100%;
     box-sizing: border-box;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+}
+
+.PostItemForm textarea {
+    height: 100px;
+    resize: vertical;
 }
 
 .PostItemForm button {
@@ -56,7 +59,6 @@
     background-color: blueviolet;
 }
 
-
 @media (max-width: 600px) {
     .PostItemForm {
         width: 95%;
@@ -70,6 +72,7 @@
     }
 
     .PostItemForm input,
+    .PostItemForm textarea,
     .PostItemForm button {
         padding: 8px;
         font-size: 12px;
