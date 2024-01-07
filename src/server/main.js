@@ -18,6 +18,9 @@ app.use(cors());
 // Middleware for parsing body of incoming requests
 app.use(express.json());
 
+// Serve static files from the uploads directory
+app.use('/uploads', express.static('uploads'));
+
 // Use the imported routes
 app.use('/api/cart-items', cartItemsRoutes);
 app.use('/api/orders', ordersRoutes);
