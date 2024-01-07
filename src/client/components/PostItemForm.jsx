@@ -32,7 +32,7 @@ const PostItemForm = ({ isOpen, onClose }) => {
                 formData.append('upload_preset', cloudinaryUploadPreset);
 
                 const cloudinaryResponse = await axios.post(
-                    `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
+                    `https://api.cloudinary.com/v1_1/${process.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
                     formData
                 );
 

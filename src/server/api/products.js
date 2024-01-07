@@ -1,6 +1,7 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const authenticateToken = require('../auth/authenticateToken');
+const cloudinary = require("cloudinary");
 const productsRouter = express.Router();
 const prisma = new PrismaClient();
 productsRouter.get('/', async (req, res, next) => {
