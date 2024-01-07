@@ -10,8 +10,24 @@ const ordersRoutes = require('./api/orders');
 const productsRoutes = require('./api/products');
 const usersRoutes = require('./api/users');
 const authRoutes = require('./auth/auth');
-// Serve static files from the uploads directory
-app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
+
+const cloudinary = require('cloudinary').v2;
+const fileUpload = require('express-fileupload');
+
+// Enable files upload
+app.use(fileUpload({
+    createParentPath: true,
+    useTempFiles: true, // Save uploads to temporary files
+    tempFileDir: '/tmp/' // Temporary files directory
+}));
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+
 require('dotenv').config();
 
 app.use(cors());
