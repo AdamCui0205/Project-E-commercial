@@ -1,36 +1,76 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useAuth } from './AuthContext';
 
-export default function AccountInfo({userId}) {
-    const [userInfo, setUserInfo] = useState(null);
-    const navigate = useNavigate();
+const AccountInfo = () => {
+    const { user_id } = useAuth(); // Get user_id from AuthContext
+    const [userData, setUserData] = useState({});
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        async function fetchUser() {
-
+        const fetchUserData = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/users/${userId}`);
-                const userData = await response.json();
-                console.log(userData);
-                setUserInfo(userData);
+                const response = await axios.get(`https://cache-corner.onrender.com/api/users/${user_id}`);
+                setUserData(response.data);
             } catch (error) {
-                console.error('Failed to fetch user:', error);
+                console.error('Error fetching user data:', error);
             }
-        }
-        fetchUser();
-    }, []);
+        };
 
+        if (user_id) {
+            fetchUserData();
+        }
+    }, [user_id]);
+
+    const handleEdit = () => {
+        setIsEditing(true);
+    };
+
+    const handleSave = async () => {
+        try {
+            await axios.put(`https://cache-corner.onrender.com/api/users/${user_id}`, userData);
+            setIsEditing(false);
+        } catch (error) {
+            console.error('Error updating user data:', error);
+        }
+    };
+
+    const handleChange = (e) => {
+        setUserData({ ...userData, [e.target.name]: e.target.value });
+    };
 
     return (
-        <section>
-            <h1>{userInfo.first_name} {userInfo.last_name}</h1>
-            <h2>E-mail: {userInfo.email}</h2>
-            <h2>Phone: {userInfo.phone}</h2>
-            <h2>Signup Date: {new Date(userInfo.signup_date).toDateString()}</h2>
-            <button>Update Info</button>
-            <button>Delete Account</button>
-            <button onClick={() => navigate(-1)}>Go Back</button>
-        </section>
+        <div>
+            {isEditing ? (
+                <div>
+                    <input type="email" name="email" value={userData.email || ''} onChange={handleChange} placeholder="Email" />
+                    <input type="password" name="password" value={userData.password || ''} onChange={handleChange} placeholder="Password" />
+                    <input type="text" name="first_name" value={userData.first_name || ''} onChange={handleChange} placeholder="First Name" />
+                    <input type="text" name="last_name" value={userData.last_name || ''} onChange={handleChange} placeholder="Last Name" />
+                    <input type="text" name="phone" value={userData.phone || ''} onChange={handleChange} placeholder="Phone" />
+                    <input type="text" name="address" value={userData.address || ''} onChange={handleChange} placeholder="Address" />
+                    <input type="text" name="addressLine2" value={userData.addressLine2 || ''} onChange={handleChange} placeholder="Address Line 2" />
+                    <input type="text" name="city" value={userData.city || ''} onChange={handleChange} placeholder="City" />
+                    <input type="text" name="state" value={userData.state || ''} onChange={handleChange} placeholder="State" />
+                    <input type="text" name="zip" value={userData.zip || ''} onChange={handleChange} placeholder="ZIP Code" />
+                    <button onClick={handleSave}>Save</button>
+                </div>
+            ) : (
+                <div>
+                    <p>Email: {userData.email}</p>
+                    <p>First Name: {userData.first_name}</p>
+                    <p>Last Name: {userData.last_name}</p>
+                    <p>Phone: {userData.phone}</p>
+                    <p>Address: {userData.address}</p>
+                    <p>Address Line 2: {userData.addressLine2}</p>
+                    <p>City: {userData.city}</p>
+                    <p>State: {userData.state}</p>
+                    <p>ZIP Code: {userData.zip}</p>
+                    <button onClick={handleEdit}>Edit</button>
+                </div>
+            )}
+        </div>
     );
-}
+};
 
+export default AccountInfo;
