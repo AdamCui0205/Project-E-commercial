@@ -56,7 +56,7 @@ const PostItemForm = ({ isOpen, onClose }) => {
 
     // Rendering the form inside a modal
     return (
-        <Modal isOpen={isOpen} onRequestClose={onClose}>
+        <Modal isOpen={isOpen} onRequestClose={onClose} className="PostItemForm">
             <h2>Post a New Product</h2>
             <form onSubmit={handlePostItem}>
                 {error && <div className="error-message">{error}</div>}
