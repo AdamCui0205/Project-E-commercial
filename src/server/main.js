@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
-    cloud_name: 'cache',
+    cloud_name: 'dtnm1xt5q',
     api_key: '716463253383252',
     api_secret: 'QK7ClPf4QtbGzk9gtMgVflQWv80'
 });
