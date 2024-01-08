@@ -10,14 +10,15 @@ const Cart = () => {
 
     const fetchCartItems = async () => {
         try {
-            const token = localStorage.getItem('token'); // Get the auth token
+            const token = localStorage.getItem('token');
             const response = await axios.get('https://cache-corner.onrender.com/api/cart-items', {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
             setCartItems(response.data);
         } catch (error) {
-            console.error('Error fetching cart items:', error.message);
-            // Add error handling logic here
+            console.error('Error fetching cart items:', error);
         }
     };
 

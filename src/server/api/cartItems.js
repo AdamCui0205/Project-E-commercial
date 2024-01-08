@@ -21,7 +21,7 @@ router.get('/', authenticateToken, async (req, res, next) => {
         });
         res.json(cartItems);
     } catch (error) {
-        console.error(error.message);
+        console.error("Error fetching cart items:", error);
         next(error);
     }
 });

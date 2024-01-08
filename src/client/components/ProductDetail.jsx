@@ -23,11 +23,14 @@ export default function ProductDetail() {
     const addToCart = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(
-                '/api/cart-items',
-                { product_id: productInfo.product_id, quantity: 1 },
-                { headers: { Authorization: token } }
-            );
+            const response = await axios.post('/api/cart-items', {
+                product_id: productInfo.product_id,
+                quantity: 1
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
             if (response.status === 201) {
                 alert('Product added to cart!');
@@ -38,10 +41,6 @@ export default function ProductDetail() {
             console.error('Error adding to cart:', error);
         }
     };
-
-    if (!productInfo) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div className="product-detail">
