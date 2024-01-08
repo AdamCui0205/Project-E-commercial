@@ -40,7 +40,7 @@ export default function ProductDetail() {
             }
         } catch (error) {
             console.error("Error adding to cart:", error);
-            // Handle the error appropriately here
+
         }
     };
     if (!productInfo) {

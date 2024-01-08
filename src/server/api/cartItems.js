@@ -1,4 +1,3 @@
-
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
@@ -6,8 +5,8 @@ const authenticateToken = require('../auth/authenticateToken');
 
 const router = express.Router();
 
-// Get all of the user's cart items //
-router.get('/', authenticateToken, async (req, res, next) => {
+// Get all of the user's cart items
+router.get('/', authenticateToken, async (req, res) => {
     const user_id = req.user.user_id;
 
     try {
@@ -16,107 +15,93 @@ router.get('/', authenticateToken, async (req, res, next) => {
                 product: {
                     user_id: user_id
                 },
-                order_id: null
+                order_id: null // Items that are not associated with an order
             },
-            include: { product: true }
+            include: {
+                product: true // Include related product details for each cart item
+            }
         });
         res.json(cartItems);
     } catch (error) {
-        console.error("Error fetching cart items:", error);
-        next(error);
-    }
-});
-
-// Get a single cart item by ID
-router.get('/:id', authenticateToken, async (req, res, next) => {
-    const id = parseInt(req.params.id);
-    try {
-        const cartItem = await prisma.cartItem.findUnique({
-            where: { cart_item_id: id },
-        });
-        if (cartItem) {
-            res.status(200).json({ message: 'Item found', cartItem });
-        } else {
-            res.status(404).json({ message: 'Item not found' });
-        }
-    } catch (error) {
-      console.error(error.message);
-      next(error);
+        res.status(500).json({ message: 'Error fetching cart items', error: error.message });
     }
 });
 
 // Create a new cart item or update quantity if it already exists
-router.post('/', authenticateToken, async (req, res, next) => {
+router.post('/', authenticateToken, async (req, res) => {
     const { product_id, quantity } = req.body;
-    const user_id = req.user.user_id;
 
     try {
-        // Check if the product already exists in the cart
+        // Check if the product exists and belongs to the user
+        const product = await prisma.product.findUnique({
+            where: { product_id }
+        });
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        // Check if the cart item for the given product already exists
         const existingItem = await prisma.cartItem.findFirst({
             where: {
                 product_id: product_id,
-                user_id: user_id,
                 order_id: null // Items not associated with an order
             }
         });
 
         if (existingItem) {
-            // Update the quantity if the product exists in the cart
+            // Update the quantity if the item exists in the cart
             const updatedCartItem = await prisma.cartItem.update({
                 where: { cart_item_id: existingItem.cart_item_id },
-                data: { quantity: existingItem.quantity + quantity },
+                data: { quantity: existingItem.quantity + quantity }
             });
             res.status(200).json(updatedCartItem);
         } else {
             // Create a new cart item
             const newCartItem = await prisma.cartItem.create({
-                data: { product_id, quantity, user_id },
+                data: {
+                    product_id: product_id,
+                    quantity: quantity,
+                }
             });
             res.status(201).json(newCartItem);
         }
     } catch (error) {
-        console.error(error.message);
-        next(error);
+        res.status(500).json({ message: 'Error processing cart item', error: error.message });
     }
 });
 
+
 // PUT route to update the quantity of a cart item
-router.put('/:id', authenticateToken, async (req, res, next) => {
+router.put('/:id', authenticateToken, async (req, res) => {
     const cart_item_id = parseInt(req.params.id);
     const { quantity } = req.body;
-    const user_id = req.user.user_id;
 
     try {
-        const updatedCartItem = await prisma.cartItem.updateMany({
-            where: { cart_item_id, user_id, order_id: null }, // Checks to make sure itmes are not checked out
+        const updatedCartItem = await prisma.cartItem.update({
+            where: { cart_item_id },
             data: { quantity },
         });
 
-        // If the cart item does not exist or does not belong to the user, return 404
-        if (updatedCartItem.count === 0) {
-            return res.status(404).json({ message: 'Item not found or does not belong to user' });
-        }
-        // If the cart item exists, return the updated cart item
         res.json(updatedCartItem);
     } catch (error) {
-        console.error(error.message);
-        next(error);
+        console.error("Error updating cart item:", error);
+        res.status(500).json({ message: 'Error updating cart item', error: error.message });
     }
 });
 
-/// DELETE route to remove an item from the cart
-router.delete('/:id', authenticateToken, async (req, res, next) => {
+// DELETE route to remove an item from the cart
+router.delete('/:id', authenticateToken, async (req, res) => {
     const cart_item_id = parseInt(req.params.id);
-    const user_id = req.user.user_id;
 
     try {
-        await prisma.cartItem.deleteMany({
-            where: { cart_item_id, user_id, order_id: null },
+        await prisma.cartItem.delete({
+            where: { cart_item_id },
         });
         res.json({ message: 'Item removed from cart' });
     } catch (error) {
-        console.error(error.message);
-        next(error);
+        console.error("Error removing cart item:", error);
+        res.status(500).json({ message: 'Error removing cart item', error: error.message });
     }
 });
 

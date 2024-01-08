@@ -29,7 +29,7 @@ const Cart = () => {
             await axios.delete(`https://cache-corner.onrender.com/api/cart-items/${itemId}`, {
                 headers: { Authorization: token }
             });
-            fetchCartItems(); // Refresh the cart items
+            await fetchCartItems(); // Refresh the cart items
         } catch (error) {
             console.error('Error removing item from cart:', error.message);
             // Add error handling logic here
@@ -45,7 +45,7 @@ const Cart = () => {
 
             if (response.status === 201) {
                 alert('Checkout successful!');
-                fetchCartItems(); // Refresh the cart to show it's now empty
+                await fetchCartItems(); // Refresh the cart to show it's now empty
             } else {
                 console.error('Checkout failed');
                 // Add error handling logic here
