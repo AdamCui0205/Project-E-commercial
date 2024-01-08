@@ -41,7 +41,7 @@ const Cart = () => {
             </ul>
             <div className="checkout-section">
                 <p><strong>Total: ${cartTotal.toFixed(2)}</strong></p>
-                <div className="cart-buttons">
+                <div className="action-buttons">
                     <button onClick={handleCheckout} className="checkout-button">Checkout</button>
                     <button onClick={() => emptyCart()} className="clear-btn">Clear Cart</button>
                 </div>
