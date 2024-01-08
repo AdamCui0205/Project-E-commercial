@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useCart } from 'react-use-cart';
+import '../styles/ProductDetail.css';
 
 const ProductDetail = () => {
     const [productInfo, setProductInfo] = useState(null);
