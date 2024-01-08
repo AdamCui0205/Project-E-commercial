@@ -43,7 +43,7 @@ const Cart = () => {
                 <p><strong>Total: ${cartTotal.toFixed(2)}</strong></p>
                 <div className="cart-buttons">
                     <button onClick={handleCheckout} className="checkout-button">Checkout</button>
-                    <button onClick={() => emptyCart()} className="clear-cart-button">Clear Cart</button>
+                    <button onClick={() => emptyCart()} className="clear-btn">Clear Cart</button>
                 </div>
             </div>
         </section>
