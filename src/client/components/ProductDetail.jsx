@@ -7,7 +7,7 @@ export default function ProductDetail() {
     const [productInfo, setProductInfo] = useState(null);
     const { id } = useParams(); // Extracting the product ID from the URL
     const navigate = useNavigate();
-
+// The useEffect hook is used to fetch the product data from the server when the component is first rendered. The product ID is extracted from the URL using the useParams hook. The product ID is then used to fetch the product data from the server. The product data is stored in the productInfo state variable. The product data is then displayed in the JSX.
     useEffect(() => {
         const fetchProduct = async () => {
             try {

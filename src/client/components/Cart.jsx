@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
-
+// The useEffect hook is used to fetch the cart items from the server when the component is first rendered. The cart items are stored in the cartItems state variable. The cart items are then displayed in the JSX.
     useEffect(() => {
         fetchCartItems();
     }, []);
