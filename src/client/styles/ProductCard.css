@@ -1,13 +1,14 @@
 .product-card {
     background-color: whitesmoke;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     padding: 20px;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    border: 1px solid #aaa;
 }
 
 .product-card img {
