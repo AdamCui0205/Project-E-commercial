@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Ensure this import points to where your AuthContext is located
+import { useAuth } from './AuthContext';
 import '../styles/PostItemForm.css';
 
 const PostItemForm = ({ isOpen, onClose }) => {
@@ -12,7 +12,7 @@ const PostItemForm = ({ isOpen, onClose }) => {
     const [image, setImage] = useState(null);
     const [description, setDescription] = useState('');
     const [error, setError] = useState('');
-    const { user_id } = useAuth(); // Ensuring that user_id is used from AuthContext
+    const { user_id } = useAuth();
     const navigate = useNavigate();
 
     const categories = [
