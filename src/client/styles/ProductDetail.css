@@ -4,12 +4,16 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
     padding: 20px;
     max-width: 600px;
-    margin: auto;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .product-detail img {
-    width: 400px;
-    height: 400px;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
     border-radius: 4px;
     margin-bottom: 20px;
 }
@@ -35,7 +39,7 @@
     font-size: 16px;
     transition: background-color 0.3s ease;
     display: block;
-    margin-bottom: 10px;
+    margin: 10px auto;
 }
 
 .product-detail button:hover {
