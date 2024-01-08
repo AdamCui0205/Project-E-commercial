@@ -25,10 +25,9 @@ export const AuthProvider = ({ children }) => {
         const storedUserId = localStorage.getItem('user_id');
         if (token && storedUserId) {
             setIsLoggedIn(true);
-            setUserId(parseInt(storedUserId, 10));
+            setUserId(parseInt(storedUserId, 10)); // Make sure this is a number
         }
     }, []);
-
     const login = (token, userId) => {
         localStorage.setItem('token', token);
         localStorage.setItem('user_id', userId);
@@ -71,4 +70,10 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (context === undefined) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
+};

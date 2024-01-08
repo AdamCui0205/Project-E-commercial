@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext'; // Ensure this import points to where your AuthContext is located
 import '../styles/PostItemForm.css';
 
 const PostItemForm = ({ isOpen, onClose }) => {
@@ -11,7 +12,7 @@ const PostItemForm = ({ isOpen, onClose }) => {
     const [image, setImage] = useState(null);
     const [description, setDescription] = useState('');
     const [error, setError] = useState('');
-
+    const { user_id } = useAuth(); // Ensuring that user_id is used from AuthContext
     const navigate = useNavigate();
 
     const categories = [
@@ -46,24 +47,21 @@ const PostItemForm = ({ isOpen, onClose }) => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(
+            await axios.post(
                 'https://cache-corner.onrender.com/api/products',
                 formData,
                 {
                     headers: {
-                        Authorization: token
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
                     }
                 }
             );
 
-            if (response.status === 201) {
-                onClose();
-                navigate('/');
-            } else {
-                setError('Failed to post the product');
-            }
+            onClose(); // Close the modal
+            navigate('/'); // Navigate to the home page or to the products list
         } catch (error) {
-            setError('An error occurred during posting.');
+            setError(error?.response?.data?.message || 'An error occurred during posting.');
             console.error('Posting error:', error);
         }
     };
