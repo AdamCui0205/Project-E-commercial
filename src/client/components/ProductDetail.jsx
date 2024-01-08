@@ -1,14 +1,15 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from './AuthContext';
 import '../styles/ProductDetail.css';
 
 export default function ProductDetail() {
     const [productInfo, setProductInfo] = useState(null);
     const { id } = useParams(); // Extracting the product ID from the URL
     const navigate = useNavigate();
-// The useEffect hook is used to fetch the product data from the server when the component is first rendered. The product ID is extracted from the URL using the useParams hook. The product ID is then used to fetch the product data from the server. The product data is stored in the productInfo state variable. The product data is then displayed in the JSX.
+    const { fetchCartItems } = useAuth(); // Destructure fetchCartItems from the context
+
     useEffect(() => {
         const fetchProduct = async () => {
             try {
@@ -35,14 +36,15 @@ export default function ProductDetail() {
 
             if (response.status === 201) {
                 alert("Product added to cart!");
+                fetchCartItems(); // Refresh the cart items in AuthContext
             } else {
                 console.error("Failed to add to cart");
             }
         } catch (error) {
             console.error("Error adding to cart:", error);
-
         }
     };
+
     if (!productInfo) {
         return <div>Loading...</div>;
     }

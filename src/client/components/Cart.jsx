@@ -1,38 +1,23 @@
-
-import React, { useState, useEffect } from 'react';
+import  { useEffect } from 'react';
+import { useAuth } from './AuthContext';
 import axios from 'axios';
 
 const Cart = () => {
-    const [cartItems, setCartItems] = useState([]);
-// The useEffect hook is used to fetch the cart items from the server when the component is first rendered. The cart items are stored in the cartItems state variable. The cart items are then displayed in the JSX.
-    useEffect(() => {
-        fetchCartItems();
-    }, []);
+    const { cartItems, fetchCartItems } = useAuth(); // Use cartItems and fetchCartItems from AuthContext
 
-    const fetchCartItems = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get('https://cache-corner.onrender.com/api/cart-items', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setCartItems(response.data);
-        } catch (error) {
-            console.error('Error fetching cart items:', error);
-        }
-    };
+    useEffect(() => {
+        fetchCartItems(); // Fetch cart items when the component mounts
+    }, [fetchCartItems]); // Only re-run the effect if fetchCartItems changes
 
     const handleRemoveItem = async (itemId) => {
         try {
             const token = localStorage.getItem('token');
             await axios.delete(`https://cache-corner.onrender.com/api/cart-items/${itemId}`, {
-                headers: { Authorization: token }
+                headers: { Authorization: `Bearer ${token}` }
             });
-            await fetchCartItems(); // Refresh the cart items
+            fetchCartItems(); // Refresh the cart items from AuthContext after removing an item
         } catch (error) {
             console.error('Error removing item from cart:', error.message);
-            // Add error handling logic here
         }
     };
 
@@ -40,19 +25,17 @@ const Cart = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post('https://cache-corner.onrender.com/api/orders', {}, {
-                headers: { Authorization: token }
+                headers: { Authorization: `Bearer ${token}` }
             });
 
             if (response.status === 201) {
                 alert('Checkout successful!');
-                await fetchCartItems(); // Refresh the cart to show it's now empty
+                fetchCartItems(); // Refresh the cart to show it's now empty
             } else {
                 console.error('Checkout failed');
-                // Add error handling logic here
             }
         } catch (error) {
             console.error('Error during checkout:', error);
-            // Add error handling logic here
         }
     };
 
