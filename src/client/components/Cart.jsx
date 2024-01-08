@@ -12,7 +12,7 @@ const Cart = () => {
         try {
             const token = localStorage.getItem('token'); // Get the auth token
             const response = await axios.get('https://cache-corner.onrender.com/api/cart-items', {
-                headers: { Authorization: token }
+                headers: { Authorization: `Bearer ${token}` }
             });
             setCartItems(response.data);
         } catch (error) {
