@@ -57,6 +57,21 @@
     background-color: blueviolet;
 }
 
+.PostItemForm select {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.PostItemForm select option {
+    font-size: 14px;
+    padding: 8px;
+}
+
 @media (max-width: 600px) {
     .PostItemForm {
         width: 95%;
