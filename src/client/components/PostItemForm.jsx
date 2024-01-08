@@ -70,7 +70,7 @@ const PostItemForm = ({ isOpen, onClose }) => {
 
     return (
         <Modal isOpen={isOpen} onRequestClose={onClose} className="PostItemForm">
-            <h2>Post a New Product</h2>
+            <h2>Sell your item:</h2>
             <form onSubmit={handlePostItem}>
                 {error && <div className="error-message">{error}</div>}
                 <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
