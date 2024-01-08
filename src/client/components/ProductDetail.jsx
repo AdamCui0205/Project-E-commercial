@@ -42,6 +42,9 @@ export default function ProductDetail() {
             console.error('Error adding to cart:', error);
         }
     };
+    if (!productInfo) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="product-detail">
