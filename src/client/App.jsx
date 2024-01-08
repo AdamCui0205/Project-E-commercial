@@ -10,7 +10,7 @@ import RegisterModal from './components/RegisterModal';
 import AccountInfo from './components/AccountInfo';
 import Cart from './components/Cart';
 import { AuthProvider } from "./components/AuthContext";
-
+import Checkout from "./components/Checkout";
 function App() {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
@@ -33,6 +33,7 @@ function App() {
                         <Route path="/account" element={<AccountInfo userId={userId} />} />
                         <Route path="/post-item" element={<PostItemForm isOpen={showPost} onClose={() => setShowPost(false)} />} />
                         <Route path="/cart" element={<Cart />} />
+                        <Route path="/checkout" element={<Checkout />} />
                     </Routes>
                     <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} setUserId={setUserId} />
                     <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
