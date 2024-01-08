@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user_id, setUserId] = useState(null);
+    const [cartItems, setCartItems] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -33,8 +34,28 @@ export const AuthProvider = ({ children }) => {
         login(token, userId.toString());
     };
 
+    const fetchCartItems = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get('/api/cart-items', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setCartItems(response.data);
+        } catch (error) {
+            console.error('Error fetching cart items:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchCartItems();
+        }
+    }, [isLoggedIn]);
+
     return (
-        <AuthContext.Provider value={{ isLoggedIn, user_id, login, logout, registerSuccess }}>
+        <AuthContext.Provider value={{ isLoggedIn, user_id, login, logout, registerSuccess, cartItems, fetchCartItems }}>
             {children}
         </AuthContext.Provider>
     );
