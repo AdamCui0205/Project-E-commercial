@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -7,7 +8,7 @@ export default function ProductDetail() {
     const [productInfo, setProductInfo] = useState(null);
     const { id } = useParams(); // Extracting the product ID from the URL
     const navigate = useNavigate();
-
+// The useEffect hook is used to fetch the product data from the server when the component is first rendered. The product ID is extracted from the URL using the useParams hook. The product ID is then used to fetch the product data from the server. The product data is stored in the productInfo state variable. The product data is then displayed in the JSX.
     useEffect(() => {
         const fetchProduct = async () => {
             try {
@@ -23,11 +24,14 @@ export default function ProductDetail() {
     const addToCart = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(
-                '/api/cart-items',
-                { product_id: productInfo.product_id, quantity: 1 },
-                { headers: { Authorization: token } }
-            );
+            const response = await axios.post('/api/cart-items', {
+                product_id: productInfo.product_id,
+                quantity: 1
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
             if (response.status === 201) {
                 alert('Product added to cart!');
@@ -38,10 +42,6 @@ export default function ProductDetail() {
             console.error('Error adding to cart:', error);
         }
     };
-
-    if (!productInfo) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div className="product-detail">

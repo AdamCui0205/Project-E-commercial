@@ -1,3 +1,4 @@
+
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
@@ -5,7 +6,7 @@ const authenticateToken = require('../auth/authenticateToken');
 
 const router = express.Router();
 
-// Get all of the user's cart items
+// Get all of the user's cart items //
 router.get('/', authenticateToken, async (req, res, next) => {
     const user_id = req.user.user_id;
 
@@ -21,7 +22,7 @@ router.get('/', authenticateToken, async (req, res, next) => {
         });
         res.json(cartItems);
     } catch (error) {
-        console.error(error.message);
+        console.error("Error fetching cart items:", error);
         next(error);
     }
 });
