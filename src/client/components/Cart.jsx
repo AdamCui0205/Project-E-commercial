@@ -16,7 +16,7 @@ const Cart = () => {
     if (isEmpty) return <p>Your cart is empty</p>;
 
     return (
-        <div>
+        <div className="cart-container">
             <h2>Cart ({totalUniqueItems}) total items: ({totalItems})</h2>
             <ul>
                 {items.map((item) => (
