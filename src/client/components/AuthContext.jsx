@@ -1,11 +1,24 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import { useCart } from 'react-use-cart';
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user_id, setUserId] = useState(null);
-    const [cartItems, setCartItems] = useState([]);
+
+    // Integration with react-use-cart
+    const {
+        isEmpty,
+        totalUniqueItems,
+        items,
+        totalItems,
+        cartTotal,
+        addItem,
+        updateItemQuantity,
+        removeItem,
+        emptyCart,
+    } = useCart();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -15,6 +28,7 @@ export const AuthProvider = ({ children }) => {
             setUserId(parseInt(storedUserId, 10));
         }
     }, []);
+
     const login = (token, userId) => {
         localStorage.setItem('token', token);
         localStorage.setItem('user_id', userId);
@@ -22,40 +36,36 @@ export const AuthProvider = ({ children }) => {
         setUserId(parseInt(userId, 10));
     };
 
-
     const logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user_id');
         setIsLoggedIn(false);
         setUserId(null);
+        emptyCart(); // Clear the cart on logout
     };
 
     const registerSuccess = (token, userId) => {
         login(token, userId.toString());
     };
 
-    const fetchCartItems = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get('/api/cart-items', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setCartItems(response.data);
-        } catch (error) {
-            console.error('Error fetching cart items:', error);
-        }
-    };
-
-    useEffect(() => {
-        if (isLoggedIn) {
-            fetchCartItems();
-        }
-    }, [isLoggedIn]);
-
     return (
-        <AuthContext.Provider value={{ isLoggedIn, user_id, login, logout, registerSuccess, cartItems, fetchCartItems }}>
+        <AuthContext.Provider value={{
+            isLoggedIn,
+            user_id,
+            login,
+            logout,
+            registerSuccess,
+            // Cart-related values and functions from react-use-cart
+            isEmpty,
+            totalUniqueItems,
+            items,
+            totalItems,
+            cartTotal,
+            addItem,
+            updateItemQuantity,
+            removeItem,
+            emptyCart,
+        }}>
             {children}
         </AuthContext.Provider>
     );
