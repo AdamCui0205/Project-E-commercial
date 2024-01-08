@@ -53,8 +53,9 @@
         width: 90%;
         margin: 20px auto;
 
-    .account-info-container input,
-    .account-info-container button {
-        width: 100%;
+        .account-info-container input,
+        .account-info-container button {
+            width: 100%;
+        }
     }
 }
