@@ -47,6 +47,8 @@ const PostItemForm = ({ isOpen, onClose }) => {
 
         try {
             const token = localStorage.getItem('token');
+            formData.append('user_id', user_id);  // Append user_id to the form data
+
             await axios.post(
                 'https://cache-corner.onrender.com/api/products',
                 formData,
