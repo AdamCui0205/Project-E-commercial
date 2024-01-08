@@ -7,7 +7,7 @@ const router = express.Router();
 
 // Get all of the user's cart items
 router.get('/', authenticateToken, async (req, res, next) => {
-    const user_id = req.user.user_id; // Extract user_id from the authenticated user
+    const user_id = req.user.user_id;
 
     try {
         const cartItems = await prisma.cartItem.findMany({
