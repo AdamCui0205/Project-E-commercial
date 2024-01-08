@@ -1,9 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Checkout.css';
-
+import { useCart } from 'react-use-cart';
 const Checkout = () => {
     const navigate = useNavigate();
+    const { emptyCart } = useCart();
 
     const handleCheckout = () => {
         // Simulate a checkout process
@@ -12,6 +13,7 @@ const Checkout = () => {
         // Simulate a successful order placement
         setTimeout(() => {
             alert('Order placed successfully!');
+            emptyCart();
             navigate('/');
         }, 2000);  // 2 second delay
     };
