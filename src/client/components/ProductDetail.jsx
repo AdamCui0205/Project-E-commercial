@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from './AuthContext';
-import '../styles/ProductDetail.css';
+import { useCart } from 'react-use-cart';
 
-export default function ProductDetail() {
+const ProductDetail = () => {
     const [productInfo, setProductInfo] = useState(null);
-    const { id } = useParams(); // Extracting the product ID from the URL
+    const { id } = useParams();
     const navigate = useNavigate();
-    const { fetchCartItems } = useAuth(); // Destructure fetchCartItems from the context
+    const { addItem } = useCart();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -22,26 +21,16 @@ export default function ProductDetail() {
         fetchProduct();
     }, [id]);
 
-    const addToCart = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            const response = await axios.post("/api/cart-items", {
-                product_id: productInfo.product_id,
-                quantity: 1
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+    const addToCart = () => {
+        if (productInfo) {
+            // Add product to cart using the addItem method
+            addItem({
+                id: productInfo.product_id,
+                title: productInfo.title,
+                price: productInfo.price,
+                quantity: 1,
             });
-
-            if (response.status === 201) {
-                alert("Product added to cart!");
-                fetchCartItems(); // Refresh the cart items in AuthContext
-            } else {
-                console.error("Failed to add to cart");
-            }
-        } catch (error) {
-            console.error("Error adding to cart:", error);
+            alert('Product added to cart!');
         }
     };
 
@@ -62,4 +51,6 @@ export default function ProductDetail() {
             <button onClick={() => navigate(-1)}>Go Back</button>
         </div>
     );
-}
+};
+
+export default ProductDetail;

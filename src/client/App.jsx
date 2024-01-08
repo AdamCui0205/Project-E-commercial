@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { CartProvider } from 'react-use-cart'; // Import CartProvider
 import Header from './components/Header';
 import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
@@ -15,25 +16,28 @@ function App() {
     const [showRegister, setShowRegister] = useState(false);
     const [showPost, setShowPost] = useState(false);
     const [userId, setUserId] = useState(null);
-    const [cart, setCart] = useState([]);
-    const updateCart = (newCart) => {
-        setCart(newCart);
-    };
 
     return (
         <AuthProvider>
-            <Router>
-                <Header onLoginClick={() => setShowLogin(true)} onRegisterClick={() => setShowRegister(true)} setShowPost={setShowPost} setUserId={setUserId} />
-                <Routes>
-                    <Route path="/" element={<ProductList />} />
-                    <Route path="/product/:id" element={<ProductDetail />} />
-                    <Route path="/account" element={<AccountInfo userId={userId} />} />
-                    <Route path="/post-item" element={<PostItemForm isOpen={showPost} onClose={() => setShowPost(false)} setShowPost={setShowPost} updateCart={updateCart}/>} />
-                    <Route path="/cart" element={<Cart cart={cart} updateCart={updateCart} />} />
-                </Routes>
-                <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} setUserId={setUserId} />
-                <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
-            </Router>
+            <CartProvider>
+                <Router>
+                    <Header
+                        onLoginClick={() => setShowLogin(true)}
+                        onRegisterClick={() => setShowRegister(true)}
+                        setShowPost={setShowPost}
+                        setUserId={setUserId}
+                    />
+                    <Routes>
+                        <Route path="/" element={<ProductList />} />
+                        <Route path="/product/:id" element={<ProductDetail />} />
+                        <Route path="/account" element={<AccountInfo userId={userId} />} />
+                        <Route path="/post-item" element={<PostItemForm isOpen={showPost} onClose={() => setShowPost(false)} />} />
+                        <Route path="/cart" element={<Cart />} />
+                    </Routes>
+                    <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} setUserId={setUserId} />
+                    <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
+                </Router>
+            </CartProvider>
         </AuthProvider>
     );
 }
