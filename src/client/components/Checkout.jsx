@@ -25,12 +25,20 @@ const Checkout = () => {
                     <input type="text" id="name" name="name" required />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="address">Address</label>
+                    <label htmlFor="address">Mailing Address</label>
                     <input type="text" id="address" name="address" required />
                 </div>
                 <div className="form-group">
                     <label htmlFor="card">Credit Card Number</label>
                     <input type="text" id="card" name="card" required />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="expiration">Expiration Date</label>
+                    <input type="text" id="expiration" name="expiration" required />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="address">CVV Number</label>
+                    <input type="text" id="cvv" name="cvv" required />
                 </div>
                 <button type="submit" className="checkout-button" onClick={handleCheckout}>
                     Place Order
