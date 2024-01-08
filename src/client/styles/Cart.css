@@ -1,68 +1,88 @@
 .cart-container {
-    background-color: #f8f9fa;
-    border: 3px solid #4e0ecc;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px 0 rgba(46, 61, 73, 0.2);
-    padding: 30px;
-    max-width: 800px;
-    margin: 50px auto;
-    text-align: left;
+    background-color: whitesmoke;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
 }
 
 .cart-container h2 {
-    color: #4e0ecc;
-    margin-bottom: 30px;
-    font-weight: bold;
-    font-size: 1.5em;
+    color: rebeccapurple;
+    margin-bottom: 20px;
 }
 
 .cart-container ul {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin-bottom: 20px;
 }
 
 .cart-container li {
     border-bottom: 1px solid #ddd;
-    padding: 15px 0;
+    padding: 10px 0;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+}
+
+.cart-container li div.item-info {
     font-weight: bold;
 }
 
-.cart-container li button {
-    background-color: #4e0ecc;
+.cart-container button {
+    background-color: rebeccapurple;
     color: white;
-    padding: 8px 15px;
+    padding: 5px 10px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.9em;
-    margin-left: 10px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
 }
 
-.cart-container li button:hover {
-    background-color: #35258a;
+.cart-container button:hover {
+    background-color: #9466ff;
 }
 
 .checkout-section {
-    margin-top: 30px;
-    padding-top: 30px;
+    margin-top: 20px;
+    padding-top: 20px;
     border-top: 1px solid #ddd;
+}
+
+.checkout-section p {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.cart-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.cart-buttons .checkout-button,
+.cart-buttons .clear-cart-button {
+    background-color: rebeccapurple;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.cart-buttons .checkout-button:hover,
+.cart-buttons .clear-cart-button:hover {
+    background-color: #9466ff;
 }
 
 @media (max-width: 768px) {
     .cart-container {
         width: 90%;
-    }
-
-    .cart-container li {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .cart-container li button {
-        margin-top: 10px;
+        box-sizing: border-box;
     }
 }
