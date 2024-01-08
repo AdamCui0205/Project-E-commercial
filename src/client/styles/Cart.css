@@ -30,13 +30,13 @@
 .cart-container li button {
     background-color: rebeccapurple;
     color: white;
-    padding: 8px;
+    padding: 8px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
-    margin: 0 5px;
+    margin: 0 10px;
 }
 
 .cart-container li button:hover {
@@ -45,41 +45,38 @@
 
 .cart-total {
     margin-bottom: 20px;
+    font-size: 18px;
 }
 
-.cart-container .checkout-btn,
-.cart-container .clear-btn {
+
+.cart-container .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.cart-container .action-buttons button {
     background-color: rebeccapurple;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 20px; /* Uniform padding */
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
-    display: inline-block;
-    margin: 20px;
-    height: 40px;
-    width: 60px;
+    width: auto;
+    min-width: 120px;
 }
 
-.cart-container .checkout-btn:hover,
-.cart-container .clear-btn:hover {
+.cart-container .action-buttons button:hover {
     background-color: #9466ff;
-}
-
-.checkout-btn {
-    max-width: 120px;
-}
-
-.clear-btn {
-    max-width: 120px;
 }
 
 @media (max-width: 768px) {
     .cart-container {
         width: 90%;
-        box-sizing: border-box;
+        padding: 20px;
     }
 
     .cart-container li {
@@ -91,13 +88,8 @@
         margin: 5px 0;
     }
 
-    .cart-total {
-        font-size: 18px;
-    }
-
-    .cart-container .checkout-btn,
-    .cart-container .clear-btn {
+    .cart-container .action-buttons {
+        flex-direction: column;
         width: 100%;
-        margin: 10px 0;
     }
 }
