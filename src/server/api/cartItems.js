@@ -32,40 +32,26 @@ router.post('/', authenticateToken, async (req, res) => {
     const { product_id, quantity } = req.body;
 
     try {
-        // Check if the product exists and belongs to the user
+        // Fetch the product to get the price
         const product = await prisma.product.findUnique({
-            where: { product_id }
+            where: { product_id: product_id },
         });
 
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
 
-        // Check if the cart item for the given product already exists
-        const existingItem = await prisma.cartItem.findFirst({
-            where: {
-                product_id: product_id,
-                order_id: null // Items not associated with an order
-            }
+        const price = product.price;
+
+        const newCartItem = await prisma.cartItem.create({
+            data: {
+                product_id,
+                quantity,
+                price,
+            },
         });
 
-        if (existingItem) {
-            // Update the quantity if the item exists in the cart
-            const updatedCartItem = await prisma.cartItem.update({
-                where: { cart_item_id: existingItem.cart_item_id },
-                data: { quantity: existingItem.quantity + quantity }
-            });
-            res.status(200).json(updatedCartItem);
-        } else {
-            // Create a new cart item
-            const newCartItem = await prisma.cartItem.create({
-                data: {
-                    product_id: product_id,
-                    quantity: quantity,
-                }
-            });
-            res.status(201).json(newCartItem);
-        }
+        res.status(201).json(newCartItem);
     } catch (error) {
         res.status(500).json({ message: 'Error processing cart item', error: error.message });
     }
