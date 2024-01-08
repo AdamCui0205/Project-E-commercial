@@ -44,7 +44,7 @@ router.get('/:id', authenticateToken, async (req, res, next) => {
     }
 });
 
-// Create a new cart item
+// Create a new cart item or update quantity if it already exists
 router.post('/', authenticateToken, async (req, res, next) => {
     const { product_id, quantity } = req.body;
     const user_id = req.user.user_id;
@@ -52,18 +52,22 @@ router.post('/', authenticateToken, async (req, res, next) => {
     try {
         // Check if the product already exists in the cart
         const existingItem = await prisma.cartItem.findFirst({
-            where: { product_id, order_id: null, user_id }
+            where: {
+                product_id: product_id,
+                user_id: user_id,
+                order_id: null // Items not associated with an order
+            }
         });
 
         if (existingItem) {
-            // If the product exists in the cart, update the quantity
+            // Update the quantity if the product exists in the cart
             const updatedCartItem = await prisma.cartItem.update({
                 where: { cart_item_id: existingItem.cart_item_id },
-                data: { quantity: existingItem.quantity + quantity }, // todo: Make sure front-end takes quantity into account
+                data: { quantity: existingItem.quantity + quantity },
             });
             res.status(200).json(updatedCartItem);
         } else {
-            // If not, create a new cart item
+            // Create a new cart item
             const newCartItem = await prisma.cartItem.create({
                 data: { product_id, quantity, user_id },
             });
