@@ -23,8 +23,8 @@ export default function ProductDetail() {
 
     const addToCart = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.post('/api/cart-items', {
+            const token = localStorage.getItem("token");
+            const response = await axios.post("/api/cart-items", {
                 product_id: productInfo.product_id,
                 quantity: 1
             }, {
@@ -34,12 +34,13 @@ export default function ProductDetail() {
             });
 
             if (response.status === 201) {
-                alert('Product added to cart!');
+                alert("Product added to cart!");
             } else {
-                console.error('Failed to add to cart');
+                console.error("Failed to add to cart");
             }
         } catch (error) {
-            console.error('Error adding to cart:', error);
+            console.error("Error adding to cart:", error);
+            // Handle the error appropriately here
         }
     };
     if (!productInfo) {
