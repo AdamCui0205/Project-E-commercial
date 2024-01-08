@@ -11,8 +11,13 @@ router.get('/', authenticateToken, async (req, res, next) => {
 
     try {
         const cartItems = await prisma.cartItem.findMany({
-            where: { user_id, order_id: null },
-            include: { product: true } // Includes related product details
+            where: {
+                product: {
+                    user_id: user_id
+                },
+                order_id: null
+            },
+            include: { product: true }
         });
         res.json(cartItems);
     } catch (error) {
